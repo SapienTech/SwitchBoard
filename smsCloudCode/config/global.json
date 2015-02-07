@@ -1,0 +1,11 @@
+{
+    "applications": {
+        "SMS in a Bottle": {
+            "applicationId": "kg3Jvwzxa0HSaJR0J1hVf4B23qqUi9UkwTM9ykH9", 
+            "masterKey": "c41Jitjr4rnKI9kKzzPs0y4jutl8WqLzb00eYOvC"
+        }, 
+        "_default": {
+            "link": "SMS in a Bottle"
+        }
+    }
+}
