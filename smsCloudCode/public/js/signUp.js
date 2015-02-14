@@ -6,41 +6,31 @@ $(function(){
 
 	// Functions
 	function signUp(){
-      var user = new Parse.User();
-      var username = $('#email').val();
-      var email = username;
-      var phone = $('#phone').val();
-      var password = $('#password').val();
-      
-      user.set("username", username);
-      user.set("email", email);
-      user.set("phone", phone);
-      user.set("password", password);
+		var user = new Parse.User();
+		var username = $('#email').val();
+		var email = username;
+		var phone = $('#phone').val();
+		var password = $('#password').val();
 
-   //    user.signUp(null, {
-   //      success: function(user){
-			// alert("Signed in.");
-			// sendIntroSMS(phone);
-			// window.location = "/discover.html";
-          
-   //      },
-   //      error: function(user, error){
-			// alert(error.code + " " + error.message);
-   //      }
-   //    });
-	user.signUp(null,{}).then(function(user){
+		user.set("username", username);
+		user.set("email", email);
+		user.set("phone", phone);
+		user.set("password", password);
+		user.set("groups", ["#trico"]);
+
+		user.signUp(null,{}).then(function(user){
 			alert("Signed in.");
 			sendIntroSMS(phone);
 			window.location = "/discover.html";
 		}, function(error){
 			alert(error.code + " " + error.message);
 		}
-  	).then(function(user){
-  		makePerson(phone);
-  	}, function(error){
+  		).then(function(user){
+  			makePerson(phone);
+  		}, function(error){
   			alert("error creating user");
   			alert(error.code + " " + error.message);
-	});
+		});
 	};	
 
 	function makePerson(phone){

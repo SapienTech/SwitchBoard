@@ -1,0 +1,155 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="//www.parsecdn.com/js/parse-1.3.4.min.js"></script>
+    <script src="js/jquery.js"></script>
+    <link rel="stylesheet" href="css/foundation.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/discover.css" />
+    <title>Discover</title>
+  </head>
+  <body>
+  <div class = "top-bar" >
+      <div>
+      <h2 class = "top-text user-text">Signed in as <span id = "user-name">undefined</span></h2>
+      <div class = "logout" onclick="logout()">
+        <h2 class = "top-text ">Logout</h2>
+      </div>
+  </div>
+  <div class = "row">
+      <div class = "small-centered small-12 large-8 columns" id = "header-div">
+        <h1>SMS in a Bottle</h1>
+        <div class = "hide-for-small">
+          <h2>Anonymous SMS-pals @ Tri-Co</h2>
+        </div>
+      </div>
+      <div class = "small-centered small-12 show-for-small-only">
+        <h3>SMS in a Bottle<h3>
+      </div>
+    </div>
+
+    <div class = "row">
+      <div class = "medium-6 small-6 small-centered columns" id = "main-div">
+      <div><h2>Click a group to become a member</h2></div>
+        <table style="width:100%" id = "groups-table">
+        </table>
+      </div>
+      <div class = "row">
+        <div class = "small-12 small-centered columns">
+        <h2>Text 256-429-2078 to get started</h2>
+        </div>7
+      </div>
+  </div>
+  <script src="js\discover.js"></script>
+  </body>
+  <script>
+  //   var currentUserName;
+
+  //   function getMemberGroups(){
+  //     var currentUser = Parse.User.current();
+  //     return currentUser.get("groups");
+  //   }
+  //   function logout(){
+  //     Parse.User.logOut();
+  //     window.location = "/index.html";
+  //   }
+  //   function authenticateUser(){
+  //     var currentUser = Parse.User.current();
+  //     if (currentUser) {
+  //       makeTopBar(currentUser.get("username"));
+  //       currentUserName = currentUser.get("username");
+  //   } else {
+  //     alert("You must be logged in to see this page!");
+  //     window.location = "/index.html";
+  //     }
+  //   };
+  //   function makeTopBar(user){
+  //     var userText = document.getElementById("user-name");
+  //     userText.innerHTML = user ;
+  //   }
+  //   function addToGroup(groupName){
+  //     var currentUser = Parse.User.current();
+
+  //     currentUser.add("groups", groupName);
+      
+  //     currentUser.save();
+  //   }
+  //   function addRowHandlers() {
+  //     var table = document.getElementById("groups-table");
+  //     var rows = table.getElementsByTagName("tr");
+  //     var memberGroups = getMemberGroups();
+  //     for (i = 0; i < rows.length; i++) {
+  //         var currentRow = table.rows[i];
+  //         var createClickHandler = function(row) {
+  //           return function() { 
+  //             var group = row.getElementsByTagName("td")[0].innerHTML;
+  //             var cell = row.getElementsByTagName("td")[1];
+  //               for(var i = 0; i < memberGroups.length; i++){
+  //                 if(memberGroups[i]==group){
+  //                 alert("Already a member of "+ group);
+  //                   return;
+  //                 }
+  //               }
+  //               //Switch cell to ✓, and join group on parse
+  //               cell.innerHTML = "✓";
+
+  //               addToGroup(group);
+  //               //add to queue group
+  //               Parse.Cloud.run("joinGroup",{
+  //                 "username": Parse.User.current().get("username"),
+  //                 "newgroup": group
+  //               },{
+  //                 success: function(result){
+  //                   alert(result);
+  //                 },
+  //                 error: function(error){
+  //                   }
+  //                 });
+  //               };
+  //             };
+
+  //         currentRow.onclick = createClickHandler(currentRow);
+  //     }
+  // }
+  //   function makeTable(){
+      
+  //     var groupsArray;
+  //     var tableLength;
+  //     var memberGroups = getMemberGroups();
+  //     var groupsTable = document.getElementById("groups-table");
+  //     Parse.Cloud.run("getGroups",{},{
+  //       success: function(result){
+  //         groupsArray = result;
+  //         tableLength = groupsArray.length;
+  //         for(var i = 0; i < tableLength; i++){
+  //           var match = false;
+  //           var row = groupsTable.insertRow(i);
+  //           var cell = row.insertCell(0);
+  //           cell.innerHTML = groupsArray[i];
+  //           for(var j = 0; j < memberGroups.length; j++){
+  //             if(memberGroups[j]==groupsArray[i]){
+  //               match = true;
+  //             }
+  //           }
+  //           if(match){
+  //             row.insertCell(1).innerHTML="✓";
+  //           }
+  //           else{
+  //             var cell2 = row.insertCell(1);
+  //             cell2.innerHTML="+";
+  //           }
+  //         }
+  //         addRowHandlers();
+  //       },
+  //       error: function(error){
+  //         //didn't work yo
+  //       }
+  //     });
+  //   };
+  //   // alert(getMemberGroups());
+  //   authenticateUser();
+  //   makeTable();
+  //   //var groupArray = makeTable();
+  //   //alert(groupArray);
+  </script>
+</html>
