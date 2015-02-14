@@ -31,7 +31,7 @@ $(function(){
   			alert("error creating user");
   			alert(error.code + " " + error.message);
 		});
-	};	
+	}
 
 	function makePerson(phone){
 		var Person = Parse.Object.extend("Person");
@@ -57,7 +57,7 @@ $(function(){
 					alert(error);
 				}
 		});
-	};
+	}
 
 	// Set up our event handlers
 	$("#submit-button").click(function(){

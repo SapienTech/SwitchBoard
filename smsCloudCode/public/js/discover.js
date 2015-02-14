@@ -1,10 +1,11 @@
-$(function(){
+$(function(){ 
+
 	Parse.initialize("kg3Jvwzxa0HSaJR0J1hVf4B23qqUi9UkwTM9ykH9", "WJ7hKtik8cAtR4e8fdMRTlR7wzBqGNoueRUZMeoV");
 	var currentUserName;
 
 	//Still need to authenticate user
 
-
+  // This returns all of the groups the current user is a member of
     function getMemberGroups(){
       var currentUser = Parse.User.current();
       return currentUser.get("groups");
@@ -76,27 +77,26 @@ $(function(){
       var groupsArray;
       var tableLength;
       var memberGroups = getMemberGroups();
+      // var groupsTable = $("#groups-table");
       var groupsTable = document.getElementById("groups-table");
       Parse.Cloud.run("getGroups",{},{
         success: function(result){
           groupsArray = result;
-          tableLength = groupsArray.length;
-          for(var i = 0; i < tableLength; i++){
+          // Make the table
+          for(var i = 0; i < groupsArray.length; i++){
+            group = groupsArray[i];
             var match = false;
+            // Make row, then cell[0] (stores group name)
             var row = groupsTable.insertRow(i);
-            var cell = row.insertCell(0);
-            cell.innerHTML = groupsArray[i];
-            for(var j = 0; j < memberGroups.length; j++){
-              if(memberGroups[j]==groupsArray[i]){
-                match = true;
-              }
-            }
-            if(match){
-              row.insertCell(1).innerHTML="✓";
+            var nameCell = row.insertCell(0);
+            // Set the cell[0] text to the group name
+            var joinedCell = row.insertCell(1);
+            nameCell.innerHTML = group;
+            if(isInGroup(group)){
+              joinedCell.innerHTML="✓";
             }
             else{
-              var cell2 = row.insertCell(1);
-              cell2.innerHTML="+";
+              joinedCell.innerHTML="+";
             }
           }
           addRowHandlers();
@@ -105,10 +105,21 @@ $(function(){
           //didn't work yo
         }
       });
-    };
+    }
+
+    //This function returns a bool, according to whether or the user in a specific group
+    function isInGroup(group){
+      var user = Parse.User.current();
+      var groupList =  user.get("groups");
+      if(($.inArray(group, groupList)) > -1){
+        return true;
+      }
+      return false;
     	//eventuall call this function
+    }
     //authenticateUser();
     makeTable();
     //var groupArray = makeTable();
+
 
 });
