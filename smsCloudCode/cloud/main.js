@@ -32,7 +32,22 @@ Parse.Cloud.define("sendSMS", function(request, response){
      }
      );
 });
+Parse.cloud.define("signUp", function(request, response){
 
+  var user = new Parse.user();
+  user.set("email", request.params.email);
+  user.set("password", request.params.password);
+  user.set("phoneNumber", request.params.phone);
+
+  user.signUp(null, {
+    success: function(user){
+      alert("Signed in.");
+      
+    },
+    error: function(user, error){}
+  })
+
+});
 // Parse.Cloud.define("signUp", function(request, response){
 
 //     var user = new Parse.User();

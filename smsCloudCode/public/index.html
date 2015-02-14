@@ -39,7 +39,7 @@
       </div>
       <div class = "row">
         <div class = "small-centered columns medium-4">
-          <input type="submit" id = "submit-button" class = "radius button sign-up" name="Sign Up" value="Sign Up" onclick = "signUpFunction()">
+          <input type="submit" id = "submit-button" class = "radius button sign-up" name="Sign Up" value="Sign Up" onclick = "signUp()">
         </div>
       </div>
       <div class = "row">
@@ -80,23 +80,41 @@ Parse.Cloud.run('sendSMS',{
  });
 };
 </script>
-<script>
-function signUpFunction(){
- var email = document.getElementById("email").value;
- var phone = document.getElementById("phone").value;
- var password = document.getElementById("password").value;
-  Parse.Cloud.run('signUp', {
-   'email': email,
-   'password': password,
-   'phone': phone
-   },
-    {
-    success: function(result) {
-      //window.location = "/discover.html";
-    },
-    error: function(error) {
-    }
-  });
-};
-</script>
+ <script>
+// function signUpFunction(){
+//  var email = document.getElementById("email").value;
+//  var phone = document.getElementById("phone").value;
+//  var password = document.getElementById("password").value;
+//   Parse.Cloud.run('signUp', {
+//    'email': email,
+//    'password': password,
+//    'phone': phone
+//    },
+//     {
+//     success: function(result) {
+//       //window.location = "/discover.html";
+//     },
+//     error: function(error) {
+//     }
+//   });
+// };
+
+  function signUp()
+    var user = new Parse.user();
+    user.set("email", request.params.email);
+    user.set("password", request.params.password);
+    user.set("phoneNumber", request.params.phone);
+
+    user.signUp(null, {
+      success: function(user){
+        alert("Signed in.");
+        window.location = "/discover.html";
+        
+      },
+      error: function(user, error){
+        alert(error);
+      }
+    })
+  }
+ </script>
 </html>
