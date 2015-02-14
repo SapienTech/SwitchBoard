@@ -28,7 +28,7 @@ $(function(){
 			//need to clear up this redundancy
 			query.equalTo("number", currentUser.get("phone"));
 			query.first().then(function(person){
-				person.add("groups", [groupName, 0]);
+				person.add("groups", {"#swat": 0});
 				return person.save();	
 			});
 		});
