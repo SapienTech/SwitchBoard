@@ -16,7 +16,7 @@ $(function(){
 		user.set("email", email);
 		user.set("phone", phone);
 		user.set("password", password);
-		user.set("groups", ["#trico"]);
+		user.set("groups", ["#trico", 0]);
 
 		user.signUp(null,{}).then(function(user){
 			alert("Signed in.");
@@ -37,7 +37,7 @@ $(function(){
 		var Person = Parse.Object.extend("Person");
   		var person = new Person();
   		person.set("number", phone);
-  		person.set("groups", ["#trico"]);
+  		person.set("groups", ["#trico", 0]);
   		person.set("partner", "+13109987101");
   		person.save();
   	}

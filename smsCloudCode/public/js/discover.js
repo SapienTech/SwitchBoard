@@ -2,6 +2,9 @@ $(function(){
 	Parse.initialize("kg3Jvwzxa0HSaJR0J1hVf4B23qqUi9UkwTM9ykH9", "WJ7hKtik8cAtR4e8fdMRTlR7wzBqGNoueRUZMeoV");
 	var currentUserName;
 
+	//Still need to authenticate user
+
+
     function getMemberGroups(){
       var currentUser = Parse.User.current();
       return currentUser.get("groups");
@@ -11,17 +14,6 @@ $(function(){
       Parse.User.logOut();
       window.location = "/index.html";
     }
-
-    // function authenticateUser(){
-    //   var currentUser = Parse.User.current();
-    //   if (currentUser) {
-    //     makeTopBar(currentUser.get("username"));
-    //     currentUserName = currentUser.get("username");
-    // } else {
-    //   alert("You must be logged in to see this page!");
-    //   window.location = "/index.html";
-    //   }
-    // };
 
     function makeTopBar(user){
       var userText = document.getElementById("user-name");
@@ -36,7 +28,7 @@ $(function(){
 			//need to clear up this redundancy
 			query.equalTo("number", currentUser.get("phone"));
 			query.first().then(function(person){
-				person.add("groups", groupName);
+				person.add("groups", [groupName, 0]);
 				return person.save();	
 			});
 		});
@@ -114,10 +106,9 @@ $(function(){
         }
       });
     };
-    // alert(getMemberGroups());
+    	//eventuall call this function
     //authenticateUser();
     makeTable();
     //var groupArray = makeTable();
-    //alert(groupArray);
 
 });
