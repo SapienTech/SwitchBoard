@@ -26,4 +26,41 @@ Parse.Cloud.define("sendSMS", function(request, response){
        }
      }
      );
-    });
+});
+
+Parse.Cloud.define("signUp", function(request, response){
+
+    var user = new Parse.User();
+    user.set("email", request.params.email);
+    user.set("password", request.params.password);
+    user.set("phoneNumber", request.params.phone);
+    user.set("groups", ['#trico']);
+ //       // other fields can be set just like with Parse.Object
+ //       //user.set("phone", document.getElementById("phone"));
+ //       alert("sent info");
+       user.signUp(null, {
+         success: function(user) {
+           alert("successful");
+           // Hooray! Let them use the app now.
+         },
+         error: function(user, error) {
+           // Show the error message somewhere and let the user try again.
+           alert("Error: " + error.code + " " + error.message);
+         }
+       });
+  var Queue = Parse.Object.extend("Queue");
+  var queue = new Queue();
+  
+  queue.save({
+    email: request.params.email,
+    groups: ["#trico"]
+}, {
+  success: function(queue) {
+    // The object was saved successfully.
+  },
+  error: function(queue, error) {
+    // The save failed.
+    // error is a Parse.Error with an error code and message.
+  }
+});
+});

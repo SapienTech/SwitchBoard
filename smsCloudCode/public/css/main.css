@@ -1,0 +1,42 @@
+body{
+	background-color:#FFE3D7;
+}
+a{
+	color:white;
+	font-family: 'Comic Sans MS';
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+h1{
+	color: #5F2A1B;
+	text-align: center;
+	font-family: 'Comic Sans MS';
+	font-weight: bold;
+	font-size:3.5em;
+}
+h2{
+	color: #5F2A1B;
+	text-align: center;
+	font-family: 'Comic Sans MS';
+	font-weight: bold;
+	font-style: italic;
+	font-variant: small-caps;
+	font-size:1.5em;
+}
+h3{
+	font-family: 'Comic Sans MS';
+	text-align: center;
+	font-size:1em;
+}
+#header-div{
+	margin-top:50px;
+	margin-bottom:50px;
+}
+#main-div{
+	margin-top:10px;
+	background-color:#947162;
+	padding-top:40px;
+	padding-bottom:40px;
+	border-radius: 10px;
+}
