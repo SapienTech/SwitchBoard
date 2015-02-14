@@ -1,0 +1,23 @@
+h2{
+	
+}
+.logout{
+	display: inline-block;
+	margin-right:0px;
+}
+.user-text{
+	margin-left:10%;
+	text-align:left;
+
+}
+.top-bar{
+	background-color: #423B35;
+	height:75px;
+
+}
+.top-text{
+	color:white;
+	display: inline-block;
+	line-height: 75px;
+	margin-top:0px;
+}
