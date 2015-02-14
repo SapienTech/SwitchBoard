@@ -3,6 +3,7 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <script src="//www.parsecdn.com/js/parse-1.3.4.min.js"></script>
+    <script src="js/jquery.js"></script>
     <link rel="stylesheet" href= "css/foundation.css" />
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/index.css" />
@@ -39,7 +40,7 @@
       </div>
       <div class = "row">
         <div class = "small-centered columns medium-4">
-          <input type="submit" id = "submit-button" class = "radius button sign-up" name="Sign Up" value="Sign Up" onclick = "signUp()">
+          <div id = "submit-button" class = "radius button sign-up"> Sign Up </div>
         </div>
       </div>
       <div class = "row">
@@ -51,70 +52,5 @@
     </div>
 </div>
   </body>
-   <script>
-    Parse.initialize("kg3Jvwzxa0HSaJR0J1hVf4B23qqUi9UkwTM9ykH9", "WJ7hKtik8cAtR4e8fdMRTlR7wzBqGNoueRUZMeoV");
-</script>
-<script>
-  Parse.Cloud.run("hello", {}, {
-    success: function(result) {
-      alert(result);
-    }, 
-    error: function(error) {
-      //do nothing
-    }
-  })
-</script>
-<script>
-function sendSMS() {
-Parse.Cloud.run('sendSMS',{
-    'msgbody' : "Hello there",
-    'number' : '+13109987101'
-  },
-  {
-    success: function(result) {
-     alert("Does this actually work?");
-   },
-   error: function(error) {
-     alert(error);
-   }
- });
-};
-</script>
- <script>
-// function signUpFunction(){
-//  var email = document.getElementById("email").value;
-//  var phone = document.getElementById("phone").value;
-//  var password = document.getElementById("password").value;
-//   Parse.Cloud.run('signUp', {
-//    'email': email,
-//    'password': password,
-//    'phone': phone
-//    },
-//     {
-//     success: function(result) {
-//       //window.location = "/discover.html";
-//     },
-//     error: function(error) {
-//     }
-//   });
-// };
-
-  function signUp()
-    var user = new Parse.user();
-    user.set("email", request.params.email);
-    user.set("password", request.params.password);
-    user.set("phoneNumber", request.params.phone);
-
-    user.signUp(null, {
-      success: function(user){
-        alert("Signed in.");
-        window.location = "/discover.html";
-        
-      },
-      error: function(user, error){
-        alert(error);
-      }
-    })
-  }
- </script>
+  <script src = "js/signUp.js"></script>
 </html>
