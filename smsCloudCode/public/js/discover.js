@@ -28,71 +28,14 @@ $(function(){
 			//need to clear up this redundancy
 			query.equalTo("number", currentUser.get("phone"));
 			query.first().then(function(person){
-				person.add("groups", {"#swat": 0});
+        var groupVar = {};
+        groupVar[groupName] = 0;
+				person.add("groups", groupVar);
 				return person.save();	
 			});
 		});
 	}
 
-    function addRowHandlers() {
-      var table = document.getElementById("groups-table");
-      var rows = table.getElementsByTagName("tr");
-      var memberGroups = getMemberGroups();
-      for (i = 0; i < rows.length; i++) {
-          var currentRow = table.rows[i];
-          var createClickHandler = function(row) {
-            return function() { 
-              var group = row.getElementsByTagName("td")[0].innerHTML;
-              var cell = row.getElementsByTagName("td")[1];
-                for(var i = 0; i < memberGroups.length; i++){
-                  if(memberGroups[i]==group){
-                  alert("Already a member of "+ group);
-                    return;
-                  }
-                }
-                //Switch cell to ✓, and join group on parse
-                cell.innerHTML = "✓";
-                addToGroup(group);
-                };
-              };
-
-          currentRow.onclick = createClickHandler(currentRow);
-      }
-  }
-
-    // function makeTable(){
-    //   var groupsArray;
-    //   var tableLength;
-    //   var memberGroups = getMemberGroups();
-    //   // var groupsTable = $("#groups-table");
-    //   var groupsTable = document.getElementById("groups-table");
-    //   Parse.Cloud.run("getGroups",{},{
-    //     success: function(result){
-    //       groupsArray = result;
-    //       // Make the table
-    //       for(var i = 0; i < groupsArray.length; i++){
-    //         group = groupsArray[i];
-    //         var match = false;
-    //         // Make row, then cell[0] (stores group name)
-    //         var row = groupsTable.insertRow(i);
-    //         var nameCell = row.insertCell(0);
-    //         // Set the cell[0] text to the group name
-    //         var joinedCell = row.insertCell(1);
-    //         nameCell.innerHTML = group;
-    //         if(isInGroup(group)){
-    //           joinedCell.innerHTML="✓";
-    //         }
-    //         else{
-    //           joinedCell.innerHTML="+";
-    //         }
-    //       }
-    //       addRowHandlers();
-    //     },
-    //     error: function(error){
-    //       //didn't work yo
-    //     }
-    //   });
-    // }
     function makeTable(){
       var memberGroups = getMemberGroups();
       var groupsArray;
@@ -100,13 +43,7 @@ $(function(){
 
       // Add our global event listener for the entire table:
       groupsTable.on("click","tr", function(event){
-        // Grab the row 
-        var row = $(this);
-        // Grabs the text of the group
-        var grp = row.children().first().text();
-        // add to group
-        addToGroup(grp);
-        
+        tableClickListener($(this));
       });
 
       // Grab the groups:
@@ -120,11 +57,29 @@ $(function(){
         }).then(function(obj){
           for(var i = 0; i < groupsArray.length; i++){
             group = groupsArray[i];
-            groupsTable.append('<tr><td>' + group + '</td>' + '<td>' + isInGroup(group) + '</td></tr>');
+            groupsTable.append('<tr><td>' + group + '</td>' + '<td class = "joined">' + isInGroup(group) + '</td></tr>');
           }
         }, function(error){});
     }
 
+    // This is just the listener function for the tablerow click
+    function tableClickListener(obj){
+      // Grab the row 
+        var row = $(obj);
+        // Grabs the text of the group
+        var grp = row.children().first().text();
+        var joined = row.children(".joined");
+        // add to group (unless they're already in)
+        if(!isInGroup(grp)){
+          addToGroup(grp);
+          alert("Joined" + grp);
+          joined.html("true");
+        }
+        else{
+          alert("You are already a member of " + grp + " !");
+        }
+        
+    }
     //This function returns a bool, according to whether or the user in a specific group
     function isInGroup(group){
       var user = Parse.User.current();
