@@ -11,12 +11,11 @@ $(function(){
 		var email = username;
 		var phone = $('#phone').val();
 		var password = $('#password').val();
-
 		user.set("username", username);
 		user.set("email", email);
 		user.set("phone", phone);
 		user.set("password", password);
-		user.set("groups", ["#trico", 0]);
+		user.set("groups", ["#trico"]);
 
 		user.signUp(null,{}).then(function(user){
 			alert("Signed in.");
@@ -37,8 +36,8 @@ $(function(){
 		var Person = Parse.Object.extend("Person");
   		var person = new Person();
   		person.set("number", phone);
-  		person.set("groups", ["#trico", 0]);
-  		person.set("partner", "+13109987101");
+  		person.set("groups", [{"#trico": 0}]);
+  		person.set("partner", "+13109987101");	
   		person.save();
   	}
   		

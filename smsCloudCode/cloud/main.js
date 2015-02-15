@@ -33,26 +33,64 @@ Parse.Cloud.define("sendSMS", function(request, response){
      );
 });
 
+function connectUsers(request, hashtag) {
+  var personQuery = new Parse.Query("Person");
+  personQuery.include("groups");
+  personQuery.equalTo("groupName", 0);
+  //personQuery.notEqualTo("number", request.params.From);
+  //personQuery.ascending("updatedAt");
+  personQuery.first().then(function(partner) {
+    Parse.Cloud.run('sendSMS', {
+      'msgbody' : 'found partner',
+      'number' : request.params.From
+      },{
+      success: function(result){
+        //not sure if we need these here for this function
+      },
+      error: function(error){
+        //received an error
+      }
+      });
 
-function routeHashtag(hashtag, request) {
+    //update partner number:
+    // partner.set("partner", request.params.From);
+    // //change the status of the groups array
+    // //this is all assuming the person is not in a chat with someone else
+    // //this may lead to some problems
+    // groups = partner.get("groups");
+    // for (i = 0; i < groups.length; i++) {
+    //   if (groups[i][0] == hashtag) {
+    //     groups[i][1] = 1;
+    //   }
+    // }
+    // partner.set("groups", groups);
+    // return partner.save();
+
+  }, function(error) {
+    //this will need to move eventually
+  });
+};
+
+
+function routeHashtag(request, hashtag) {
   var query = new Parse.Query("Groups");
   query.equalTo("groupName", hashtag);
   query.find().then(function(groups) {
     if (groups.length > 0) {
-      //group does exist
-
-      
-      //  Parse.Cloud.run('sendSMS', {
-      // 'msgbody' : "The group you entered exists",
-      // 'number' : request.params.From
-      // },{
-      // success: function(result){
-      //   //not sure if we need these here for this function
-      // },
-      // error: function(error){
-      //   //received an error
-      // }
-      // });
+       Parse.Cloud.run('sendSMS', {
+      'msgbody' : 'group exists',
+      'number' : request.params.From
+      },{
+      success: function(result){
+        //not sure if we need these here for this function
+      },
+      error: function(error){
+        //received an error
+      }
+      });
+      connectUsers(request, hashtag);
+      /*group does exist. Get a user who belongs to one of
+        these groups and is available*/      
     }
     else {
       //group does not exist
@@ -125,7 +163,7 @@ Parse.Cloud.define("receiveSMS", function(request, response){
     success: function(result){
       //need to make sure this is actually the proper hashtag
       //testing confirmation
-      routeHashtag(result, request);
+      routeHashtag(request, result);
     },
     error: function(error){
       //do something
