@@ -45,7 +45,7 @@ function connectUsers(request, hashtag) {
   //personQuery.ascending("updatedAt");
   personQuery.find().then(function(partner) {
     Parse.Cloud.run('sendSMS', {
-      'msgbody' : (partner.length).toString(),
+      'msgbody' : (partner.length).toString() + ' user(s) found',
       'number' : request.params.From
       },{
       success: function(result){
