@@ -34,14 +34,18 @@ Parse.Cloud.define("sendSMS", function(request, response){
 });
 
 function connectUsers(request, hashtag) {
+  var groupVar = {};
+  groupVar[hashtag] = 0;
   var personQuery = new Parse.Query("Person");
   personQuery.include("groups");
-  personQuery.equalTo("groupName", 0);
+  //personQuery.include("#swat");
+  personQuery.equalTo("groups", groupVar);
+  //personQuery.equalTo("trico", 0);  
   //personQuery.notEqualTo("number", request.params.From);
   //personQuery.ascending("updatedAt");
-  personQuery.first().then(function(partner) {
+  personQuery.find().then(function(partner) {
     Parse.Cloud.run('sendSMS', {
-      'msgbody' : 'found partner',
+      'msgbody' : (partner.length).toString(),
       'number' : request.params.From
       },{
       success: function(result){
@@ -52,22 +56,37 @@ function connectUsers(request, hashtag) {
       }
       });
 
-    //update partner number:
-    // partner.set("partner", request.params.From);
-    // //change the status of the groups array
-    // //this is all assuming the person is not in a chat with someone else
-    // //this may lead to some problems
-    // groups = partner.get("groups");
-    // for (i = 0; i < groups.length; i++) {
-    //   if (groups[i][0] == hashtag) {
-    //     groups[i][1] = 1;
-    //   }
-    // }
-    // partner.set("groups", groups);
-    // return partner.save();
+    //update reciever's partner number:
+    newVar = {};
+    newVar[hashtag] = 1;
+    partner[0].set("partner", request.params.From);
+    partner[0].remove("groups", groupVar);
+    partner[0].save().then(function(partner) {
+      partner.add("groups", newVar);
+      return partner.save();
+    });
+    //update sender's partner number
+    partnerNumber = partner[0].get("number");
+    senderQuery = new Parse.Query("Person");
+    senderQuery.equalTo("number", request.params.From);
+    senderQuery.first().then(function(sender) {
+      sender.set("partner", partnerNumber);
+      return sender.save();
+    });
+    return partner[0].save();
 
   }, function(error) {
-    //this will need to move eventually
+    Parse.Cloud.run('sendSMS', {
+      'msgbody' : 'did not find a partner',
+      'number' : request.params.From
+      },{
+      success: function(result){  
+        //not sure if we need these here for this function
+      },
+      error: function(error){
+        //received an error
+      }
+      });
   });
 };
 

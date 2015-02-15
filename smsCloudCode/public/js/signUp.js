@@ -37,7 +37,6 @@ $(function(){
   		var person = new Person();
   		person.set("number", phone);
   		person.set("groups", [{"#trico": 0}]);
-  		person.set("partner", "+13109987101");	
   		person.save();
   	}
   		
