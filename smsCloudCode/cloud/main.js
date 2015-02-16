@@ -34,15 +34,15 @@ Parse.Cloud.define("sendSMS", function(request, response){
 });
 
 function connectUsers(request, hashtag) {
-  var groupVar = {};
-  groupVar[hashtag] = 0;
+  // if we want to use pair system instead:
+  // var busyVar = {};
+  // busyVar[hashtag] = 1;
   var personQuery = new Parse.Query("Person");
   personQuery.include("groups");
-  //personQuery.include("#swat");
-  personQuery.equalTo("groups", groupVar);
-  //personQuery.equalTo("trico", 0);  
-  //personQuery.notEqualTo("number", request.params.From);
-  //personQuery.ascending("updatedAt");
+  personQuery.equalTo("groups", hashtag);
+  personQuery.notEqualTo("number", request.params.From);
+  personQuery.notEqualTo("busyBool", true);
+  personQuery.ascending("updatedAt");
   personQuery.find().then(function(partner) {
     Parse.Cloud.run('sendSMS', {
       'msgbody' : (partner.length).toString() + ' user(s) found',
@@ -56,23 +56,66 @@ function connectUsers(request, hashtag) {
       }
       });
 
-    //update reciever's partner number:
-    newVar = {};
-    newVar[hashtag] = 1;
-    partner[0].set("partner", request.params.From);
-    partner[0].remove("groups", groupVar);
-    partner[0].save().then(function(partner) {
-      partner.add("groups", newVar);
-      return partner.save();
-    });
-    //update sender's partner number
-    partnerNumber = partner[0].get("number");
-    senderQuery = new Parse.Query("Person");
-    senderQuery.equalTo("number", request.params.From);
-    senderQuery.first().then(function(sender) {
-      sender.set("partner", partnerNumber);
-      return sender.save();
-    });
+    // update reciever's partner number:
+    if (partner.length > 0){
+      // newVar = {};
+      // newVar[hashtag] = 1;
+      partner[0].set("partner", request.params.From);
+      partner[0].set("busyBool", true);
+      partner[0].save();
+      //route message to new partner
+      Parse.Cloud.run('sendSMS', {
+      'msgbody' : request.params.Body,
+      'number' : partner[0].get("number")
+      },{
+      success: function(result){
+        //not sure if we need these here for this function
+      },
+      error: function(error){
+        //received an error
+      }
+      });
+      // partner[0].remove("groups", groupVar);
+      // partner[0].save().then(function(partner) {
+      //   partner.add("groups", newVar);
+      //   return partner.save();
+      // });
+      //update sender's information
+      partnerNumber = partner[0].get("number");
+      senderQuery = new Parse.Query("Person");
+      senderQuery.equalTo("number", request.params.From);
+      senderQuery.first().then(function(sender) {
+        oldPartner = sender.get("partner");
+        if (oldPartner.length > 0) {
+          disconnect(oldPartner);
+          sender.set("partner", partnerNumber);
+          sender.set("busyBool", true);
+        }
+        else{
+          sender.set("partner", partnerNumber);
+          sender.set("busyBool", true);
+          // sender.remove("groups", groupVar);
+          // sender.save().then(function(sender) {
+          //   sender.add("groups", newVar);
+          //   return sender.save();
+          // });
+        }
+        return sender.save();
+      });
+    }
+    else {
+      Parse.Cloud.run('sendSMS', {
+      'msgbody' : 'Looks like everyone from that group is busy. Try again later.',
+      'number' : request.params.From
+      },{
+      success: function(result){
+        //not sure if we need these here for this function
+      },
+      error: function(error){
+        //received an error
+      }
+      });
+    }
     return partner[0].save();
 
   }, function(error) {
@@ -90,6 +133,27 @@ function connectUsers(request, hashtag) {
   });
 };
 
+function disconnect(number) {
+  query = new Parse.Query("Person");
+  query.equalTo("number", number);
+  query.first().then(function(partner) {
+    partner.set("partner", "");
+    partner.set("busyBool", false);
+    Parse.Cloud.run('sendSMS', {
+      'msgbody' : 'You were disconnected from your partner.',
+      'number' : partner.get("number")
+      },{
+      success: function(result){  
+        //not sure if we need these here for this function
+      },
+      error: function(error){
+        //received an error
+      }
+      });
+    //maybe we should put this in the success section?
+    return partner.save();
+  });
+}
 
 function routeHashtag(request, hashtag) {
   var query = new Parse.Query("Groups");

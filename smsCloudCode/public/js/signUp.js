@@ -36,7 +36,8 @@ $(function(){
 		var Person = Parse.Object.extend("Person");
   		var person = new Person();
   		person.set("number", phone);
-  		person.set("groups", [{"#trico": 0}]);
+  		person.set("groups", ["#trico"]);
+  		person.set("busyBool", false);
   		person.save();
   	}
   		

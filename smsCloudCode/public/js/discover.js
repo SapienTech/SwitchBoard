@@ -28,9 +28,9 @@ $(function(){
 			//need to clear up this redundancy
 			query.equalTo("number", currentUser.get("phone"));
 			query.first().then(function(person){
-        var groupVar = {};
-        groupVar[groupName] = 0;
-				person.add("groups", groupVar);
+        // var groupVar = {};
+        // groupVar[groupName] = 0;
+				person.add("groups", groupName);
 				return person.save();	
 			});
 		});
