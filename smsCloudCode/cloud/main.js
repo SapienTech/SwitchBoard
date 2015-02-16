@@ -82,7 +82,7 @@ function hasPartner(request, hashtag) {
     }
     else {
       Parse.Cloud.run('sendSMS', {
-      'msgbody' : "You are currently not in a group, start message with a hastag to start talking",
+      'msgbody' : "You are currently not in a group, start message with a hashtag to start talking",
       'number' : request.params.From
       },{
       success: function(result){
@@ -107,7 +107,10 @@ function hasPartner(request, hashtag) {
 function routeHashtag(request, hashtag) {
   var query = new Parse.Query("Groups");
   query.equalTo("groupName", hashtag);
+
+  
   query.find().then(function(groups) {
+    // Testing code, sends a text if group exists.
     if (groups.length > 0) {
        Parse.Cloud.run('sendSMS', {
       'msgbody' : 'group exists',
@@ -156,18 +159,68 @@ function routeHashtag(request, hashtag) {
   });
 };
 
-//if hashtag exists, attempts to pair two users
-function connectUsers(request, hashtag) {
-  // if we want to use pair system instead:
-  // var busyVar = {};
-  // busyVar[hashtag] = 1;
+
+// When we've matched with a partner, set their info
+function setPartnerInfo(partner, request){
+  partner.set("partner", request.params.From);
+  partner.set("busyBool", true);
+  partner.save();
+  //route message to new partner
+  Parse.Cloud.run('sendSMS', {
+  'msgbody' : request.params.Body,
+  'number' : partner.get("number")
+  },{
+  success: function(result){
+    //not sure if we need these here for this function
+  },
+  error: function(error){
+    //received an error
+  }
+  });
+}
+
+// When we've matched with a partner, set our (senders) info
+function setSenderInfo(partner, request){
+  partnerNumber = partner.get("number");
+  // Find the sender via the number
+  senderQuery = new Parse.Query("Person");
+  senderQuery.equalTo("number", request.params.From);
+
+  senderQuery.first().then(function(sender) {
+
+    // Grab the sender's old partner
+    oldPartner = sender.get("partner");
+    // If old partner exists, disconnect
+    if (oldPartner.length > 0) {
+      disconnect(oldPartner);
+    }
+    // Set our sender's new partner number
+    sender.set("partner", partnerNumber);
+    sender.set("busyBool", true);
+    return sender.save();
+  }); 
+}
+
+// Given a text & hashtag, this tries to find a partner, and returns a partner array
+function findPartner(request, hashtag){
   var personQuery = new Parse.Query("Person");
   personQuery.include("groups");
   personQuery.equalTo("groups", hashtag);
+  // Make sure we don't text ourselves
   personQuery.notEqualTo("number", request.params.From);
+  // Make sure they're not busy
   personQuery.notEqualTo("busyBool", true);
   personQuery.ascending("updatedAt");
-  personQuery.find().then(function(partner) {
+  // return our partner
+  return personQuery.find();
+}
+
+
+//if hashtag exists, attempts to pair two users
+function connectUsers(request, hashtag) {
+  // Find a person to partner with
+  findPartner(request,hashtag).then(function(partner) {
+    // Testing function: return sender a msg that you've found a user
     Parse.Cloud.run('sendSMS', {
       'msgbody' : (partner.length).toString() + ' user(s) found',
       'number' : request.params.From
@@ -180,65 +233,17 @@ function connectUsers(request, hashtag) {
       }
       });
 
-    // update reciever's partner number:
+    // If we found a partner:
     if (partner.length > 0){
-      // newVar = {};
-      // newVar[hashtag] = 1;
-      partner[0].set("partner", request.params.From);
-      partner[0].set("busyBool", true);
-      partner[0].save();
-      //route message to new partner
-      Parse.Cloud.run('sendSMS', {
-      'msgbody' : request.params.Body,
-      'number' : partner[0].get("number")
-      },{
-      success: function(result){
-        //not sure if we need these here for this function
-      },
-      error: function(error){
-        //received an error
-      }
-      });
-      // partner[0].remove("groups", groupVar);
-      // partner[0].save().then(function(partner) {
-      //   partner.add("groups", newVar);
-      //   return partner.save();
-      // });
-      //update sender's information
-      partnerNumber = partner[0].get("number");
-      senderQuery = new Parse.Query("Person");
-      senderQuery.equalTo("number", request.params.From);
-      senderQuery.first().then(function(sender) {
-        oldPartner = sender.get("partner");
-        if (oldPartner.length > 0) {
-          disconnect(oldPartner);
-          sender.set("partner", partnerNumber);
-          sender.set("busyBool", true);
-        }
-        else{
-          sender.set("partner", partnerNumber);
-          sender.set("busyBool", true);
-          // sender.remove("groups", groupVar);
-          // sender.save().then(function(sender) {
-          //   sender.add("groups", newVar);
-          //   return sender.save();
-          // });
-        }
-        return sender.save();
-      });
+      // Set partner's info
+      setPartnerInfo(partner[0], request);
+      // Set our info (and potentially disconnect current partner)
+      return setSenderInfo(partner[0], request);
     }
+
+    // If we didn't find a partner:
     else {
-      Parse.Cloud.run('sendSMS', {
-      'msgbody' : 'Looks like everyone from that group is busy. Try again later.',
-      'number' : request.params.From
-      },{
-      success: function(result){
-        //not sure if we need these here for this function
-      },
-      error: function(error){
-        //received an error
-      }
-      });
+      sendBusyMsg(request, hashtag);
     }
     return partner[0].save();
 
@@ -256,6 +261,21 @@ function connectUsers(request, hashtag) {
       });
   });
 };
+
+function sendBusyMsg(request, group){
+  Parse.Cloud.run('sendSMS', {
+  'msgbody' : 'Looks like everyone in ' + group + 'is busy.  Please try again later.',
+  'number' : request.params.From
+  },{
+  success: function(result){
+    //not sure if we need these here for this function
+  },
+  error: function(error){
+    //received an error
+  }
+  });
+
+}
 
 //disconnects old partner from chat when user connects with new partner
 function disconnect(number) {
@@ -306,9 +326,13 @@ function leaveChat(request) {
 };
 
 function unsubScribe(request) {
-  //if hastage == "#unsubscribe" then go through unsubscribe process
+  //if hashtag == "#unsubscribe" then go through unsubscribe process
 
 };
+
+function busy(request){
+  // if hashtag == busy, then set busy for a certain period of time
+}
   
   /* In case we want to make this a cloud function
   Parse.Cloud.run("parseTag", {
