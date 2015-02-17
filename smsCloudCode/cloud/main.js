@@ -211,6 +211,7 @@ function setPartnerInfo(partner, request){
 }
 
 // When we've matched with a partner, set our (senders) info
+// and notify old partner of change
 function setSenderInfo(partner, request){
   partnerNumber = partner.get("number");
   // Find the sender via the number
@@ -227,14 +228,6 @@ function setSenderInfo(partner, request){
     else{
         console.log("Error: no partner to disconnect in setSenderInfo")
       }
-    // If old partner exists, disconnect
-
-    // This line is going to throw an error, b/c if we don't have an old partner
-    // we don't have an object to test length on
-    // if (oldPartner.length > 0) {
-    //   disconnect(oldPartner);
-    // }
-    // Set our sender's new partner number
     sender.set("partner", partnerNumber);
     sender.set("busyBool", true);
     return sender.save();
@@ -388,58 +381,67 @@ function leave(number){
   // This isn't working b/c hasPartner isn't being given time to complete. 
 
   // First, we need to check if the user has a partner. If they don't, we need to tell them they're not in a convo. But hasPartner doesn't do what it says.
-  hasPartner(number).then(function(partner){
+  return hasPartner(number).then(function(partner){
     console.log("Attempting to call leave function, with sender number: " + number +  ", partner number: " + partner);
     disconnect(number);
     disconnect(partner);
+    var myPromise = new Parse.Promise();
+    myPromise.resolve();
+    console.log("changed busyBool to false");
+    return myPromise;
   }, function(){
-    //error
+    console.log('leave returned an error');
   });
 }
 
-function unsubscribe(request) {
+function unsubscribe(number) {
   //if hashtag == "#unsubscribe" then go through unsubscribe process
 
 };
 
-function busy(request){
+function busy(number){
+  hasPartner(number).then(function(number) {
+    if (number) {
+      return leave(number);
+    }
+    var myPromise = new Parse.Promise();
+    myPromise.resolve();
+    return myPromise;
+  }).then(function() {
+    console.log("entered busyBOOOOOL!");
+    var query = new Parse.Query("Person");
+    query.equalTo("number", number);
+    query.first().then(function(user) {
+      user.fetch().then(function(){
+        user.set("busyBool", true);
+        console.log("changed busyBool to true")
+        return user.save();
+      });
+      
+
+      // Parse.Cloud.run('sendSMS', {
+      //   'msgbody' : 'set to busy for one hour',
+      //   'number' : number
+      //   },{
+      //   success: function(result){
+      //     //not sure if we need these here for this function
+      //   },
+      //   error: function(error){
+      //     //received an error
+      //   }
+      //   });
+
+      
+    });
+  });
   // if hashtag == busy, then set busy for a certain period of time
 }
   
-  /* In case we want to make this a cloud function
-  Parse.Cloud.run("parseTag", {
-    'msgbody' : request.params.Body
-  }, {
-    success: function(result){
-      //need to make sure this is actually the proper hashtag
-      //testing confirmation
-      routeHashtag(request, result);
-    },
-    error: function(error){
-      //do something
-    }
-  });
-    */
-// Random helper functions:
+
 
 
 function sendSMS(recipient, body){
 
 }
-/* uncommented cloud function, not sure if needed
-Parse.Cloud.define("parseTag", function(request, response){
-     var inputString = request.params.msgbody;
-     var toReturn="";
-     if(inputString.charAt(0)!='#'){
-         toReturn = "no tag";
-      }
-     else{
-         for(i = 0; i < inputString.length && inputString.charAt(i)!=" "; i++){
-             toReturn+=inputString[i];
-         }
-      }
-      response.success(toReturn);
-});
-*/
 
 
