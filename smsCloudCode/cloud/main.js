@@ -29,14 +29,20 @@ Parse.Cloud.define("sendSMS", function(request, response){
 Parse.Cloud.define("receiveSMS", function(request, response){
   //parsing the hashtag.
   hashtag = parseTag(request.params.Body);
-  if (hashtag == "") {
+  number = request.params.From;
+  // check if it's a utility hashtag
+  if(utilityHash(hashtag, request.params.From)){
+    return true;
+  }
+  //if no hashtag, route message
+  else if (hashtag == "") {
     //check to see if user has partner. yes: route message, no: error message
-    hasPartner(request, hashtag);
+    hasPartner(number);
   }
   //else we do have a hashtag and we need to route it
   else {
     routeHashtag(request, hashtag);
-  }
+    }
   });
 
 //parses message to check if hashtag exists
@@ -60,16 +66,15 @@ function parseTag(hashtag) {
 /////////////helper functions for routing messages without hashtag/////////////
 
 //checks to see if user has partner, returns [true, number] or [false, ""]
-function hasPartner(request, hashtag) {
+function hasPartner(number) {
   var query = new Parse.Query("Person");
-  var partnerNumber;
   query.equalTo("number", request.params.From);
   query.first().then(function(user) {
     partnerNumber = user.get("partner");
     if (partnerNumber.length > 1) {
       Parse.Cloud.run('sendSMS', {
       'msgbody' : request.params.Body,
-      'number' : partnerNumber  //haspartner[1]
+      'number' : number  //haspartner[1]
       },{
       success: function(result){
         //not sure if we need these here for this function
@@ -277,7 +282,7 @@ function sendBusyMsg(request, group){
 
 }
 
-//disconnects old partner from chat when user connects with new partner
+//disconnects the phone number from their partner. 
 function disconnect(number) {
   query = new Parse.Query("Person");
   query.equalTo("number", number);
@@ -320,12 +325,51 @@ Parse.Cloud.define("getGroups", function(request, response){
   });
 });
 
+///////////////Helper functions for utility hashtags///////////////////
 
-function leaveChat(request) {
-  //if hashtag == "#leave" then this function is called
-};
+//Returns a bool, if the hashtag is a utility tag. If so, executes the specified function. Returns false otherwise.
+function utilityHash(hashtag, number){
+  switch(hashtag){
+    case("#leave"):
+      disconnect(number);
+      break;
+    
+    case("#unsubscribe"):
+      unsubscribe(number);
+      break;
+    
+    case("#busy"):
+      busy(number);
+      break;
+    
+    default:
+      return false;
+  }
 
-function unsubScribe(request) {
+  return true;
+}
+
+function leave(number){
+
+  // First, we need to check if the user has a partner. If they don't, we need to tell them they're not in a convo. 
+  var partner = hasPartner(number, )
+  // Disconnect partner
+  disconnect(number);
+  // Tell you you're disconnected
+  Parse.Cloud.run('sendSMS', {
+      'msgbody' : "#You have left the chat.",
+      'number' : number
+      },{
+      success: function(result){
+        //not sure if we need these here for this function
+      },
+      error: function(error){
+        //received an error
+      }
+  });
+}
+
+function unsubscribe(request) {
   //if hashtag == "#unsubscribe" then go through unsubscribe process
 
 };
@@ -348,7 +392,12 @@ function busy(request){
     }
   });
     */
+// Random helper functions:
 
+
+function sendSMS(recipient, body){
+
+}
 /* uncommented cloud function, not sure if needed
 Parse.Cloud.define("parseTag", function(request, response){
      var inputString = request.params.msgbody;
