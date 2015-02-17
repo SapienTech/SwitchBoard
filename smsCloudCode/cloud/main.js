@@ -65,6 +65,16 @@ function parseTag(hashtag) {
 
 /////////////helper functions for routing messages without hashtag/////////////
 
+
+// Once we've determined we have a partner, this is the main relay function
+function sendToPartner(request, number){
+  var partner = hasPartner(number);
+  // If we have a partner
+  if (partner[0]){
+    partner
+
+  }
+}
 //checks to see if user has partner, returns [true, number] or [false, ""]
 function hasPartner(number) {
   var query = new Parse.Query("Person");
@@ -331,7 +341,7 @@ Parse.Cloud.define("getGroups", function(request, response){
 function utilityHash(hashtag, number){
   switch(hashtag){
     case("#leave"):
-      disconnect(number);
+      leave(number);
       break;
     
     case("#unsubscribe"):
@@ -351,8 +361,8 @@ function utilityHash(hashtag, number){
 
 function leave(number){
 
-  // First, we need to check if the user has a partner. If they don't, we need to tell them they're not in a convo. 
-  var partner = hasPartner(number, )
+  // First, we need to check if the user has a partner. If they don't, we need to tell them they're not in a convo. But hasPartner doesn't do what it says.
+  var partner = hasPartner(number)
   // Disconnect partner
   disconnect(number);
   // Tell you you're disconnected
