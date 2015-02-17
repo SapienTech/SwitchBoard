@@ -31,13 +31,14 @@ Parse.Cloud.define("receiveSMS", function(request, response){
   hashtag = parseTag(request.params.Body);
   number = request.params.From;
   // check if it's a utility hashtag
-  if(utilityHash(hashtag, request.params.From)){
+  if(utilityHash(hashtag, number)){
     return true;
   }
   //if no hashtag, route message
   else if (hashtag == "") {
     //check to see if user has partner. yes: route message, no: error message
-    hasPartner(number);
+    sendToPartner(request, number)
+    // hasPartner(number);
   }
   //else we do have a hashtag and we need to route it
   else {
@@ -70,21 +71,10 @@ function parseTag(hashtag) {
 function sendToPartner(request, number){
   var partner = hasPartner(number);
   // If we have a partner
-  if (partner[0]){
-    partner
-
-  }
-}
-//checks to see if user has partner, returns [true, number] or [false, ""]
-function hasPartner(number) {
-  var query = new Parse.Query("Person");
-  query.equalTo("number", request.params.From);
-  query.first().then(function(user) {
-    partnerNumber = user.get("partner");
-    if (partnerNumber.length > 1) {
-      Parse.Cloud.run('sendSMS', {
+  if (partnerNumber.length > 1){
+    Parse.Cloud.run('sendSMS', {
       'msgbody' : request.params.Body,
-      'number' : number  //haspartner[1]
+      'number' : partnerNumber  //haspartner[1]
       },{
       success: function(result){
         //not sure if we need these here for this function
@@ -93,9 +83,8 @@ function hasPartner(number) {
         //received an error
       }
       });
-      //[true, partnerNumber];
-    }
-    else {
+  }
+  else{
       Parse.Cloud.run('sendSMS', {
       'msgbody' : "You are currently not in a group, start message with a hashtag to start talking",
       'number' : request.params.From
@@ -107,11 +96,23 @@ function hasPartner(number) {
         //received an error
       }
       });
+  }
+}
+//checks to see if user has partner, returns [true, number] or [false, ""]
+function hasPartner(number) {
+  var query = new Parse.Query("Person");
+  query.equalTo("number", number);
+  query.first().then(function(user) {
+    partnerNumber = user.get("partner");
+    if (partnerNumber.length > 1) {
+      return partnerNumber;
+    }
+    else {
+      return false;
     }
   },
     function(error) {
-      return true;//true;
-      //[{bool: true, number: '+13109987101'}];
+      return false;
     });
 };
 
@@ -364,7 +365,9 @@ function leave(number){
   // First, we need to check if the user has a partner. If they don't, we need to tell them they're not in a convo. But hasPartner doesn't do what it says.
   var partner = hasPartner(number)
   // Disconnect partner
+  // Need to work our this logic. 
   disconnect(number);
+  disconnect(partner);
   // Tell you you're disconnected
   Parse.Cloud.run('sendSMS', {
       'msgbody' : "#You have left the chat.",
