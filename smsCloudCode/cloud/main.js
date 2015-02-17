@@ -99,19 +99,40 @@ function sendToPartner(request, number){
   }
 }
 //checks to see if user has partner, returns [true, number] or [false, ""]
+// Somehow, we need to get this to return a promise. 
 function hasPartner(number) {
   var query = new Parse.Query("Person");
   query.equalTo("number", number);
-  query.first().then(function(user) {
+  // query.first().then(function(user) {
+  //   partnerNumber = user.get("partner");
+  //   if (partnerNumber) {
+  //     console.log("Tried to return partner number: " + partnerNumber);
+  //     return partnerNumber;
+  //   }
+  //   else {
+  //     console.log("Didn't find a partner number");
+  //     return false;
+  //   }
+  // },
+  //   function(error) {
+  //     console.log("hasPartner query failed. ")
+  //     return false;
+  //   });
+    return query.first().then(function(user) {
     partnerNumber = user.get("partner");
-    if (partnerNumber.length > 1) {
+    if (partnerNumber) {
+      var successful = new Parse.Promise();
+      successful.resolve(partnerNumber);
+      console.log("Tried to return partner number: " + partnerNumber);
       return partnerNumber;
     }
     else {
+      console.log("Didn't find a partner number");
       return false;
     }
   },
     function(error) {
+      console.log("hasPartner query failed. ")
       return false;
     });
 };
@@ -206,10 +227,19 @@ function setSenderInfo(partner, request){
 
     // Grab the sender's old partner
     oldPartner = sender.get("partner");
-    // If old partner exists, disconnect
-    if (oldPartner.length > 0) {
-      disconnect(oldPartner);
+    if(oldPartner){
+        disconnect(oldPartner);
     }
+    else{
+        console.log("Error: no partner to disconnect in setSenderInfo")
+      }
+    // If old partner exists, disconnect
+
+    // This line is going to throw an error, b/c if we don't have an old partner
+    // we don't have an object to test length on
+    // if (oldPartner.length > 0) {
+    //   disconnect(oldPartner);
+    // }
     // Set our sender's new partner number
     sender.set("partner", partnerNumber);
     sender.set("busyBool", true);
@@ -361,24 +391,15 @@ function utilityHash(hashtag, number){
 }
 
 function leave(number){
+  // This isn't working b/c hasPartner isn't being given time to complete. 
 
   // First, we need to check if the user has a partner. If they don't, we need to tell them they're not in a convo. But hasPartner doesn't do what it says.
-  var partner = hasPartner(number)
-  // Disconnect partner
-  // Need to work our this logic. 
-  disconnect(number);
-  disconnect(partner);
-  // Tell you you're disconnected
-  Parse.Cloud.run('sendSMS', {
-      'msgbody' : "#You have left the chat.",
-      'number' : number
-      },{
-      success: function(result){
-        //not sure if we need these here for this function
-      },
-      error: function(error){
-        //received an error
-      }
+  hasPartner(number).then(function(partner){
+    console.log("Attempting to call leave function, with sender number: " + number +  ", partner number: " + partner);
+    disconnect(number);
+    disconnect(partner);
+  }, function(){
+    //error
   });
 }
 
