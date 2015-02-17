@@ -69,10 +69,11 @@ function parseTag(hashtag) {
 
 // Once we've determined we have a partner, this is the main relay function
 function sendToPartner(request, number){
-  var partner = hasPartner(number);
-  // If we have a partner
-  if (partnerNumber.length > 1){
-    Parse.Cloud.run('sendSMS', {
+  hasPartner(number).then(function(parterNumber){
+    if(partnerNumber){
+
+
+      Parse.Cloud.run('sendSMS', {
       'msgbody' : request.params.Body,
       'number' : partnerNumber  //haspartner[1]
       },{
@@ -83,8 +84,11 @@ function sendToPartner(request, number){
         //received an error
       }
       });
-  }
-  else{
+
+    }
+
+    else{
+
       Parse.Cloud.run('sendSMS', {
       'msgbody' : "You are currently not in a group, start message with a hashtag to start talking",
       'number' : request.params.From
@@ -96,28 +100,18 @@ function sendToPartner(request, number){
         //received an error
       }
       });
-  }
-}
+
+
+    }
+  }, function(){
+    console.log("hasPartner threw an error");
+  });
+} 
 //checks to see if user has partner, returns [true, number] or [false, ""]
 // Somehow, we need to get this to return a promise. 
 function hasPartner(number) {
   var query = new Parse.Query("Person");
   query.equalTo("number", number);
-  // query.first().then(function(user) {
-  //   partnerNumber = user.get("partner");
-  //   if (partnerNumber) {
-  //     console.log("Tried to return partner number: " + partnerNumber);
-  //     return partnerNumber;
-  //   }
-  //   else {
-  //     console.log("Didn't find a partner number");
-  //     return false;
-  //   }
-  // },
-  //   function(error) {
-  //     console.log("hasPartner query failed. ")
-  //     return false;
-  //   });
     return query.first().then(function(user) {
     partnerNumber = user.get("partner");
     if (partnerNumber) {
