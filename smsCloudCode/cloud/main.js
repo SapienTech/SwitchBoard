@@ -276,9 +276,15 @@ function connectUsers(request, hashtag) {
 
     // If we didn't find a partner:
     else {
+      var query = new Parse.Query("Person");
+      query.equalTo("number", request.params.From);
+      query.first().then(function(user) {
+        user.set("busyBool", false);
+        return user.save();
+      });
       sendBusyMsg(request, hashtag);
     }
-    return partner[0].save();
+   // return partner[0].save();
 
   }, function(error) {
     Parse.Cloud.run('sendSMS', {
@@ -425,17 +431,17 @@ function busy(number){
       }, 1000 * 20);
       
 
-      // Parse.Cloud.run('sendSMS', {
-      //   'msgbody' : 'set to busy for one hour',
-      //   'number' : number
-      //   },{
-      //   success: function(result){
-      //     //not sure if we need these here for this function
-      //   },
-      //   error: function(error){
-      //     //received an error
-      //   }
-      //   });
+      Parse.Cloud.run('sendSMS', {
+        'msgbody' : 'set to busy for one hour',
+        'number' : number
+        },{
+        success: function(result){
+          //not sure if we need these here for this function
+        },
+        error: function(error){
+          //received an error
+        }
+        });
 
       
     });
