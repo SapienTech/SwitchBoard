@@ -417,6 +417,12 @@ function busy(number){
         console.log("changed busyBool to true")
         return user.save();
       });
+
+      // Set up delay
+
+      setTimeout(function(){
+        
+      }, 1000 * 20);
       
 
       // Parse.Cloud.run('sendSMS', {
