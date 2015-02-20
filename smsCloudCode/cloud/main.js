@@ -38,7 +38,7 @@ Parse.Cloud.define("receiveSMS", function(request, response){
   else if (hashtag == "") {
     //check to see if user has partner. yes: route message, no: error message
     sendToPartner(request, number)
-    // hasPartner(number);
+    // haspartner(number);
   }
   //else we do have a hashtag and we need to route it
   else {
