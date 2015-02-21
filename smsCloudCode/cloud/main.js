@@ -480,3 +480,7 @@ Parse.Cloud.job("checkRecentActivity", function(request, status) {
     return user.save();    
   });
 });
+
+function getServerTime() {
+  /*need to figure out best way to do this*/
+}
