@@ -1,4 +1,3 @@
-
 // Use Parse.Cloud.define to define as many cloud functions as you want.
 // For example:
 
@@ -38,7 +37,7 @@ Parse.Cloud.define("receiveSMS", function(request, response){
   else if (hashtag == "") {
     //check to see if user has partner. yes: route message, no: error message
     sendToPartner(request, number)
-    // hasPartner(number);
+    // haspartner(number);
   }
   //else we do have a hashtag and we need to route it
   else {
@@ -461,10 +460,44 @@ function busy(number){
 }
   
 
-
-
+/*We will eventually want to go through all the functions above
+and call this function. This function may way to return a promise?*/
 function sendSMS(recipient, body){
-
+  Parse.Cloud.run('sendSMS', {
+    'msgbody' : body,
+    'number' : recipient
+    },{
+    success: function(result){
+      //not sure if we need these here for this function
+    },
+    error: function(error){
+      //received an error
+    }
+    });
 }
 
 
+function getUserFromNumber(number) {
+
+  /*If we are going to use this function we will need to
+  return a promise*/
+}
+
+Parse.Cloud.job("checkRecentActivity", function(request, status) {
+  currentTime = getServerTime();
+  var query = new Parse.Query("Person");
+  query.each(function(user) {
+    //check timestamp of recentActivity
+    activityTime = user.get("recentActivity");
+    number = user.get("number");
+    busyBool = user.get("busyBool");
+    if (busyBool = true && currentTime - activityTime < 15) {
+      disconnect(number);
+    }
+    return user.save();    
+  });
+});
+
+function getServerTime() {
+  /*need to figure out best way to do this*/
+}
