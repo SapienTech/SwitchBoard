@@ -71,7 +71,6 @@ function sendToPartner(request, number){
   hasPartner(number).then(function(parterNumber){
     if(partnerNumber){
 
-
       Parse.Cloud.run('sendSMS', {
       'msgbody' : request.params.Body,
       'number' : partnerNumber  //haspartner[1]
@@ -108,10 +107,13 @@ function sendToPartner(request, number){
 } 
 // 
 function hasPartner(number) {
-  var query = new Parse.Query("Person");
-  query.equalTo("number", number);
+  // var query = new Parse.Query("Person");
+  // query.equalTo("number", number);
+  // Let's use the findPartner function instead:
+  return getUserFromNumber(number).then(function(user){
   // We either return a promise which contains a number, or a promise which contains 'false'
-    return query.first().then(function(user) {
+    // return query.first().then(function(user) {
+      // Aren't we going to run into asynchronous issues here? or no because .get is local
     partnerNumber = user.get("partner");
     if (partnerNumber) {
       var successful = new Parse.Promise();
@@ -128,7 +130,8 @@ function hasPartner(number) {
       console.log("hasPartner query failed. ")
       return false;
     });
-};
+
+}
 
 
 
@@ -225,7 +228,7 @@ function setSenderInfo(partner, request){
         disconnect(oldPartner);
     }
     else{
-        console.log("Error: no partner to disconnect in setSenderInfo")
+        console.log("No partner to disconnect in setSenderInfo")
       }
     sender.set("partner", partnerNumber);
     sender.set("busyBool", true);
@@ -381,23 +384,24 @@ function utilityHash(hashtag, number){
 
   return true;
 }
+/*This function returns a promise, just so as to keep it asynchronous*/
 
 function leave(number){
   // This isn't working b/c hasPartner isn't being given time to complete. 
-
   // First, we need to check if the user has a partner. If they don't, we need to tell them they're not in a convo. But hasPartner doesn't do what it says.
   return hasPartner(number).then(function(partner){
     console.log("Attempting to call leave function, with sender number: " + number +  ", partner number: " + partner);
     if(partner){
       disconnect(number);
       disconnect(partner);
+      console.log("changed busyBool to false");
     }
     else{
-      console.log("You have no partner to leave.");
+      sendSMS(number, "Looks like you're not currently partnered with anybody!");
     }
     var myPromise = new Parse.Promise();
     myPromise.resolve();
-    console.log("changed busyBool to false");
+
     return myPromise;
   }, function(){
     console.log('leave returned an error');
@@ -476,11 +480,27 @@ function sendSMS(recipient, body){
     });
 }
 
+/* getUserFromNumber
+  returns a user promise object, given a phone number 
 
+
+*/
 function getUserFromNumber(number) {
 
-  /*If we are going to use this function we will need to
-  return a promise*/
+  var personQuery = new Parse.Query("Person");
+  personQuery.equalTo("number", number);
+
+  return personQuery.first().then(function(user){
+
+    console.log("Found user from number: " + number);
+    var promise = new Parse.Promise();
+    promise.resolve(user);
+    return promise;
+  }, function(){
+    var promise = new Parse.Promise();
+    promise.reject("getUserFromNumber didn't succeed");
+    return promise;
+  });
 }
 
 Parse.Cloud.job("checkRecentActivity", function(request, status) {
