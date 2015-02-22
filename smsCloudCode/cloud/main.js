@@ -107,11 +107,11 @@ function sendToPartner(request, number){
     console.log("hasPartner threw an error");
   });
 } 
-//checks to see if user has partner, returns [true, number] or [false, ""]
-// Somehow, we need to get this to return a promise. 
+// 
 function hasPartner(number) {
   var query = new Parse.Query("Person");
   query.equalTo("number", number);
+  // We either return a promise which contains a number, or a promise which contains 'false'
     return query.first().then(function(user) {
     partnerNumber = user.get("partner");
     if (partnerNumber) {
@@ -389,8 +389,13 @@ function leave(number){
   // First, we need to check if the user has a partner. If they don't, we need to tell them they're not in a convo. But hasPartner doesn't do what it says.
   return hasPartner(number).then(function(partner){
     console.log("Attempting to call leave function, with sender number: " + number +  ", partner number: " + partner);
-    disconnect(number);
-    disconnect(partner);
+    if(partner){
+      disconnect(number);
+      disconnect(partner);
+    }
+    else{
+      console.log("You have no partner to leave.");
+    }
     var myPromise = new Parse.Promise();
     myPromise.resolve();
     console.log("changed busyBool to false");
@@ -418,6 +423,7 @@ function busy(number){
     var query = new Parse.Query("Person");
     query.equalTo("number", number);
     query.first().then(function(user) {
+
       user.fetch().then(function(){
         user.set("busyBool", true);
         console.log("changed busyBool to true")
@@ -427,6 +433,11 @@ function busy(number){
       // Set up delay
 
       setTimeout(function(){
+        console.log("Changed busyBool to false.");
+        user.fetch().then(function(user){
+          user.set("busyBool", false);
+          return user.save();
+        });
         
       }, 1000 * 20);
       
