@@ -423,12 +423,13 @@ function getUserFromNumber(number) {
 Parse.Cloud.job("manageUsers", function(request, status) {
   console.log("Running unBusy");
   currentTime = getServerTime();
-  var query = new Parse.Query("Person");
+  var busyQuery = new Parse.Query("Person");
   // We want to separate this into two queries:
   // For users without a partner, AND with busybool = true, unbusy
   // For users WITH a partner, call 
-  query.isEqual("partner","");
-  query.each(function(user) {
+  busyQuery.isEqual("partner","");
+  busyQuery.isEqual("busyBool", true);
+  busyQuery.each(function(user) {
       unbusy(user);
   });
   console.log("Finished running unBusy");
@@ -436,25 +437,21 @@ Parse.Cloud.job("manageUsers", function(request, status) {
 
 
 function unbusy(user){
-  // If user DOESNT have a partner
-    if(!user.get("partner")){
-      // if user is busy
-      if(user.get("busyBool")){
-        console.log("Found busy user: " + user.get("number"));
-        // then, test timestamp
-        var timeDifference = getServerTime() - getUserTime(user);
-        console.log("Time difference is: " + timeDifference);
-        if(timeDifference > (1 * 60) ) {
-          console.log("Found a user who was busied more than a minute ago. Unbusying.")
-          user.set("busyBool", false);
-          user.save(); 
-        }
-        else{
-          console.log("This user wasn't unbusied long enough ago. Not unbusying. ")
-        }
-      }
-    }
+  // test timestamp
+  var timeDifference = getServerTime() - getUserTime(user);
+  console.log("Time difference is: " + timeDifference);
+  // How many minutes we need them to be busy for before we disconnect
+  minutesDiff = 1;
+  if(timeDifference > (minutesDiff * 60) ) {
+    console.log("Found a user who was busied more than a minute ago. Unbusying.")
+    user.set("busyBool", false);
+    user.save(); 
+  }
+  else{
+    console.log("This user wasn't unbusied long enough ago. Not unbusying. ")
+  }
 }
+
 
 
 /* getUserTime (user) - returns the amount of seconds since 1970 of the updatedAt user field
