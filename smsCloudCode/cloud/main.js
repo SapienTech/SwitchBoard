@@ -31,6 +31,7 @@ Parse.Cloud.define("sendSMS", function(request, response){
 //called when twilio receives message
 Parse.Cloud.define("receiveSMS", function(request, response){
   //parsing the hashtag.
+  getServerTime();
   hashtag = parseTag(request.params.Body);
   number = request.params.From;
   // check if it's a utility hashtag
@@ -419,21 +420,62 @@ function getUserFromNumber(number) {
   });
 }
 
-Parse.Cloud.job("checkRecentActivity", function(request, status) {
+Parse.Cloud.job("manageUsers", function(request, status) {
+  console.log("Running unBusy");
   currentTime = getServerTime();
   var query = new Parse.Query("Person");
+  // We want to separate this into two queries:
+  // For users without a partner, AND with busybool = true, unbusy
+  // For users WITH a partner, call 
+  query.isEqual("partner","");
   query.each(function(user) {
-    //check timestamp of recentActivity
-    activityTime = user.get("recentActivity");
-    number = user.get("number");
-    busyBool = user.get("busyBool");
-    if (busyBool = true && currentTime - activityTime < 15) {
-      disconnect(number);
-    }
-    return user.save();    
+      unbusy(user);
   });
+  console.log("Finished running unBusy");
 });
 
+
+function unbusy(user){
+  // If user DOESNT have a partner
+    if(!user.get("partner")){
+      // if user is busy
+      if(user.get("busyBool")){
+        console.log("Found busy user: " + user.get("number"));
+        // then, test timestamp
+        var timeDifference = getServerTime() - getUserTime(user);
+        console.log("Time difference is: " + timeDifference);
+        if(timeDifference > (1 * 60) ) {
+          console.log("Found a user who was busied more than a minute ago. Unbusying.")
+          user.set("busyBool", false);
+          user.save(); 
+        }
+        else{
+          console.log("This user wasn't unbusied long enough ago. Not unbusying. ")
+        }
+      }
+    }
+}
+
+
+/* getUserTime (user) - returns the amount of seconds since 1970 of the updatedAt user field
+ *
+ *
+ */
+function getUserTime(user){
+  console.log("Calculating userTime...");
+  // This isn't being got for some reason
+  var userLastActive = user.updatedAt;
+  console.log(userLastActive);
+  var userDate = new Date(userLastActive);
+  var time = userDate.getTime();
+  console.log("done calculating user time.");
+  return time/1000.0;
+}
+
+/* getServerTime
+  returns the time in SECONDS since 1970
+*/
 function getServerTime() {
-  /*need to figure out best way to do this*/
+  time = Date.now();
+  return time/1000.0;
 }
