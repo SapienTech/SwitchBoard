@@ -259,6 +259,7 @@ function disconnect(number) {
   });
 }
 
+
 ///////////////functions that handles group adding//////////////////
 
 Parse.Cloud.define("getGroups", function(request, response){
@@ -424,25 +425,32 @@ Parse.Cloud.job("manageUsers", function(request, status) {
   console.log("Running unBusy");
   currentTime = getServerTime();
   var busyQuery = new Parse.Query("Person");
-  // We want to separate this into two queries:
   // For users without a partner, AND with busybool = true, unbusy
-  // For users WITH a partner, call 
-  busyQuery.isEqual("partner","");
-  busyQuery.isEqual("busyBool", true);
+  busyQuery.equalTo("partner","");
+  busyQuery.equalTo("busyBool", true);
   busyQuery.each(function(user) {
-      unbusy(user);
+      unbusy(user, 1);
   });
   console.log("Finished running unBusy");
+  // Disconnect users who have been inactive for more than 5 minutes. 
+  var timeoutQuery = new Parse.Query("Person");
+  timeoutQuery.notEqualTo("partner", "");
+  timeoutQuery.each(function(user){
+    timeout(user);
+  });
+
 });
 
-
-function unbusy(user){
+/* unbusy(user, minutes) -- unbusies a user if they have been busy for more than x minutes
+ *
+ *
+ */
+function unbusy(user, minutes){
   // test timestamp
   var timeDifference = getServerTime() - getUserTime(user);
   console.log("Time difference is: " + timeDifference);
-  // How many minutes we need them to be busy for before we disconnect
-  minutesDiff = 1;
-  if(timeDifference > (minutesDiff * 60) ) {
+  // How many minutes we need them to be busy for before we unbusy
+  if(timeDifference > (minutes * 60) ) {
     console.log("Found a user who was busied more than a minute ago. Unbusying.")
     user.set("busyBool", false);
     user.save(); 
@@ -451,6 +459,20 @@ function unbusy(user){
     console.log("This user wasn't unbusied long enough ago. Not unbusying. ")
   }
 }
+
+/* timeout (user, minutes) - times out a user if they have been vacant for too long
+
+ */
+function timeout(user, minutes){
+  var timeDifference = getServerTime() - getUserTime(user);
+  var number = user.get("number");
+  var partnerNum = user.get("partner");
+  if(timeDifference > (minutes * 60) ) 
+    disconnect(number);
+    disconnect(partnerNum);
+}
+
+
 
 
 
