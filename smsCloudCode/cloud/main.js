@@ -31,9 +31,21 @@ Parse.Cloud.define("sendSMS", function(request, response){
 //called when twilio receives message
 Parse.Cloud.define("receiveSMS", function(request, response){
   //parsing the hashtag.
-  getServerTime();
-  hashtag = parseTag(request.params.Body);
   number = request.params.From;
+  // Check to see if user is active
+  var userExists;
+  getUserFromNumber(number).then(function(userExists){
+  });
+
+  if(!userExists){
+    sendSMS(number, "Looks like this isn't a registered number. Please sign up at www.MSGinabottle.com.");
+    return;
+  }
+
+  console.log("Proceeding with sendSMS");
+
+  hashtag = parseTag(request.params.Body);
+  
   // check if it's a utility hashtag
   if(utilityHash(hashtag, number)){
     return true;
@@ -42,7 +54,6 @@ Parse.Cloud.define("receiveSMS", function(request, response){
   else if (hashtag == "") {
     //check to see if user has partner. yes: route message, no: error message
     sendToPartner(request, number)
-    // haspartner(number);
   }
   //else we do have a hashtag and we need to route it
   else {
@@ -98,7 +109,7 @@ function sendToPartner(request, number){
 } 
 /* hasPartner
 
-  -Given a number, returns a promise-fied user object of the partner, or if not, returns false
+  -Given a number, returns a promise-fied number of the partner, or if not, returns false
 
 */
 function hasPartner(number) {
@@ -110,12 +121,17 @@ function hasPartner(number) {
     if (partnerNumber) {
       var successful = new Parse.Promise();
       successful.resolve(partnerNumber);
-      console.log("Tried to return partner number: " + partnerNumber);
-      return partnerNumber;
+      // console.log("Tried to return partner number: " + partnerNumber);
+      // This just make's sure we keep the user updated w/each message, for the timeoutFunction
+      updateUserTimes(user);
+      // This used to return 'partnerNumber - but that's wrong, no?
+      return successful;
     }
     else {
       console.log("Didn't find a partner number");
-      return false;
+      var noPartner = new Parse.Promise();
+      noPartner.resolve(false);
+      return noPartner;
     }
   },
     function(error) {
@@ -125,6 +141,17 @@ function hasPartner(number) {
 
 }
 
+/* updateUserTimes - save user and partner user to make sure updatedTimes update w/each message
+
+ */
+
+function updateUserTimes(user){
+  user.save().then(function(){
+    getUserFromNumber(user.get("partner")).then(function(partnerUser){
+      partnerUser.save();
+    });
+  });
+}
 
 
 //////////////helper functions to handle new hashtag request////////////////////
@@ -328,11 +355,30 @@ function leave(number){
 
 function unsubscribe(number) {
   //if hashtag == "#unsubscribe" then go through unsubscribe process
+  return getUserFromNumber(number).then(function(user){
+    // If they have a partner, disconnect the partner
+    hasPartner(number).then(function(partnerNum){
+      if (partnerNum){
+        disconnect(partnerNum);
+      }
+    }).then(function(){
+      user.destroy();
+      sendSMS(number, "You have been unsubscribed. Hope to see you back soon!");
+    });
+
+    // We need code to actually delete the USER
+    /*var userQuery = new Parse.Query("User");
+    userQuery.equalTo("number", number);
+    userQuery.first(function(){});*/
+  });
 
 };
+/* busy(number) - sets user busy for a number of hours specified in unBusy. Returns an empty promise (hence all the returns)
 
+*/
 function busy(number){
-  hasPartner(number).then(function(number) {
+  return hasPartner(number).then(function(number) {
+    // remove partner if we have one
     if (number) {
       return leave(number);
     }
@@ -340,45 +386,17 @@ function busy(number){
     myPromise.resolve();
     return myPromise;
   }).then(function() {
-    console.log("entered busyBOOOOOL!");
     var query = new Parse.Query("Person");
     query.equalTo("number", number);
-    query.first().then(function(user) {
-
+    return query.first().then(function(user) {
       user.fetch().then(function(){
         user.set("busyBool", true);
+        sendSMS(number, "You have been set to busy for one hour.");
         console.log("changed busyBool to true")
         return user.save();
       });
-
-      // Set up delay
-
-      setTimeout(function(){
-        console.log("Changed busyBool to false.");
-        user.fetch().then(function(user){
-          user.set("busyBool", false);
-          return user.save();
-        });
-        
-      }, 1000 * 20);
-      
-
-      Parse.Cloud.run('sendSMS', {
-        'msgbody' : 'set to busy for one hour',
-        'number' : number
-        },{
-        success: function(result){
-          //not sure if we need these here for this function
-        },
-        error: function(error){
-          //received an error
-        }
-        });
-
-      
     });
   });
-  // if hashtag == busy, then set busy for a certain period of time
 }
   
 
@@ -416,7 +434,7 @@ function getUserFromNumber(number) {
     return promise;
   }, function(){
     var promise = new Parse.Promise();
-    promise.reject("getUserFromNumber didn't succeed");
+    promise.resolve(false);
     return promise;
   });
 }
@@ -436,7 +454,7 @@ Parse.Cloud.job("manageUsers", function(request, status) {
   var timeoutQuery = new Parse.Query("Person");
   timeoutQuery.notEqualTo("partner", "");
   timeoutQuery.each(function(user){
-    timeout(user);
+    timeout(user, 5.0);
   });
 
 });
@@ -464,12 +482,17 @@ function unbusy(user, minutes){
 
  */
 function timeout(user, minutes){
-  var timeDifference = getServerTime() - getUserTime(user);
+  var curTime = getServerTime();
+  var lastUpdated = getUserTime(user);
+  var timeDifference = curTime - lastUpdated;
   var number = user.get("number");
   var partnerNum = user.get("partner");
-  if(timeDifference > (minutes * 60) ) 
+  console.log("Calculating time out between users. Servertime:" + curTime + ", last updated time: " + lastUpdated + ", timeDifference = " + timeDifference + "testing against:" + (minutes * 60));
+  if(timeDifference > (minutes * 60) ){ 
     disconnect(number);
     disconnect(partnerNum);
+    console.log("disconnected due to inactivity");
+  }
 }
 
 
@@ -484,10 +507,10 @@ function getUserTime(user){
   console.log("Calculating userTime...");
   // This isn't being got for some reason
   var userLastActive = user.updatedAt;
-  console.log(userLastActive);
   var userDate = new Date(userLastActive);
   var time = userDate.getTime();
   console.log("done calculating user time.");
+  // Returns the updated at time in seconds
   return time/1000.0;
 }
 
