@@ -3,6 +3,7 @@ $(function(){
 	var currentUserName;
   
 	//Still need to authenticate user
+  makeTopBar();
 
   // This returns all of the groups the current user is a member of
   function getMemberGroups(){
@@ -15,9 +16,9 @@ $(function(){
     window.location = "/index.html";
   }
 
-  function makeTopBar(user){
+  function makeTopBar(){
     var userText = document.getElementById("user-name");
-    userText.innerHTML = user ;
+    userText.innerHTML = Parse.User.current().get("email");
   }
 
   function addToGroup(groupName){
