@@ -13,24 +13,66 @@ $(function(){
 		var password = $('#password').val();
 		user.set("username", username);
 		user.set("email", email);
-		user.set("phone", phone);
+		
 		user.set("password", password);
 		user.set("groups", ["#trico"]);
 
-		user.signUp(null,{}).then(function(user){
+		// First format the number
+		formatNumber(phone).then(function(newNumber){
+			user.set("phone", newNumber);
+			return Parse.Promise.as("Success");
+		}).then(function(obj){
+			// Then call signup
+			return user.signUp(null,{});
+		}).then(function(obj){
+			// Then make a user
+			return makePerson(user.get("phone"));
+		}).then(function(obj){
+			// Then go to new page
 			alert("Signed in.");
-			sendIntroSMS(phone);
+			sendIntroSMS(user.get("phone"));
 			window.location = "/discover.html";
 		}, function(error){
-			alert(error.code + " " + error.message);
-		}
-  		).then(function(user){
-  			makePerson(phone);
-  		}, function(error){
-  			alert("error creating user");
-  			alert(error.code + " " + error.message);
+			alert(error);
 		});
 	}
+
+/* formatNumber(number) -- formats a number into the form +15556666. Returns a promise w/the formatted number, or an error
+
+*/
+	function formatNumber(number){
+		var returnNum = new Parse.Promise();
+		var newNumber;
+		// If empty, return error parse promise
+		if(!number.length){
+			returnNum.reject("Phone number is empty.");
+			return returnNum;
+		}
+
+		//Remove anything that's not a number
+		newNumber = number.replace(/\D/g,"");
+
+		//If not a 1 at beginning, add 1.
+		if(newNumber.charAt(0)!="1"){
+			newNumber = "1" + newNumber;
+		}
+		
+		//If phone number is not 11 digits, throw an error
+		if(newNumber.length!=11){
+			returnNum.reject("Please enter a valid phone number.");
+			return returnNum;
+		}
+		//Add a plus at the beginning
+		newNumber = "+" + newNumber;
+		returnNum.resolve(newNumber);
+		//return the promise
+		return returnNum;
+	}
+
+
+/* makePerson - returns a promise of a saved person.
+
+*/
 
 	function makePerson(phone){
 		var Person = Parse.Object.extend("Person");
@@ -38,7 +80,7 @@ $(function(){
   		person.set("number", phone);
   		person.set("groups", ["#trico"]);
   		person.set("busyBool", false);
-  		person.save();
+  		return person.save();
   	}
   		
 
