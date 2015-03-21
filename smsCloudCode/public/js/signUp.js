@@ -4,7 +4,7 @@ $(function(){
 	// Variables
 	var introText = "Welcome to SMS in a Bottle!";
 
-	// Functions
+	/*signUp*/
 	function signUp(){
 		var user = new Parse.User();
 		var username = $('#email').val();
@@ -80,6 +80,7 @@ $(function(){
   		person.set("number", phone);
   		person.set("groups", ["#trico"]);
   		person.set("busyBool", false);
+  		person.set("partner", "");
   		return person.save();
   	}
   		

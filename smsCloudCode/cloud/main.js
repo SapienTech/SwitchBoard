@@ -1,12 +1,11 @@
-// Use Parse.Cloud.define to define as many cloud functions as you want.
-// For example:
+/* --------------------------------------------
 
-Parse.Cloud.define("hello", function(request, response) {
-  response.success("Hello world FROM CLOUDz!");
-});
+                  CLOUD FUNCTIONS
 
-// Cloud functions: define("Function Name, Function(request response)")
-// Response is a JSON object
+  ---------------------------------------------  */
+
+
+
 
 //handles outgoing text message
 Parse.Cloud.define("sendSMS", function(request, response){
@@ -32,38 +31,46 @@ Parse.Cloud.define("sendSMS", function(request, response){
 Parse.Cloud.define("receiveSMS", function(request, response){
   //parsing the hashtag.
   number = request.params.From;
-  // Check to see if user is active
+  console.log("Sender number: " +  number);
+
+  // Check to see if user exists
   var userExists;
   getUserFromNumber(number).then(function(userExists){
-  });
 
-  if(!userExists){
-    sendSMS(number, "Looks like this isn't a registered number. Please sign up at www.MSGinabottle.com.");
-    return;
-  }
+    if(!userExists){
+      sendSMS(number, "Looks like this isn't a registered number. Please sign up at www.MSGinabottle.com.");
+      return;
+    } 
+    console.log("Proceeding with sendSMS");
 
-  console.log("Proceeding with sendSMS");
-
-  hashtag = parseTag(request.params.Body);
-  
-  // check if it's a utility hashtag
-  if(utilityHash(hashtag, number)){
-    return true;
-  }
-  //if no hashtag, route message
-  else if (hashtag == "") {
-    //check to see if user has partner. yes: route message, no: error message
-    sendToPartner(request, number)
-  }
-  //else we do have a hashtag and we need to route it
-  else {
-    routeHashtag(request, hashtag);
+    hashtag = parseTag(request.params.Body);
+    
+    // If it's a utility hashtag, run that utility and exit
+    if(utilityHash(hashtag, number)){
+      return;
     }
+    //If no hashtag, try to route message
+    else if (hashtag == "") {
+      //check to see if user has partner. yes: route message, no: error message
+      sendToPartner(request, number)
+    }
+    //Else, we do have a hashtag and we need to route it
+    else {
+      routeHashtag(request, hashtag);
+      }
   });
 
 
 
-/*parseTag
+  });
+
+/* --------------------------------------------
+
+                       JS
+
+  ---------------------------------------------  */
+
+/*parseTag (hashtag)
 
 parses message to check if hashtag exists
 
@@ -82,6 +89,34 @@ function parseTag(hashtag) {
       return toReturn;
 };
 
+/* logMSG (sender, recipient, body)
+
+  Saves a message when a message is sent. Saves at max three messages per RECIPIENT.
+
+ */
+function logMSG(sender, recipient, body){
+  var MSGLog = Parse.Object.extend("msgLog");
+  var msg = new MSGLog();
+  msg.set("recipient", recipient);
+  msg.set("sender", sender);
+  msg.set("body", body);
+  msg.set("reported", false);
+  msg.save();
+  // If we have more than 3 messages for a recipient, delete the oldest one
+  var msgQuery = new Parse.Query("msgLog");
+  msg.equalTo("recipient", recipient);
+  msgQuery.descending("createdAt");
+  msgQuery.find().then(function(results){
+    if(results.length > 3){
+      console.log("Destroyed last text message");
+      results[3].destroy();
+    }
+  });
+
+  // Need some logic for only saving three messages
+
+
+}
 
 
 
@@ -93,7 +128,7 @@ function sendToPartner(request, number){
   hasPartner(number).then(function(parterNumber){
     // If we do indeed have a partner, relay the msg
     if(partnerNumber){
-
+      logMSG(number, partnerNumber, request.params.Body);
       sendSMS(partnerNumber, request.params.Body);
 
     }
@@ -323,6 +358,9 @@ function utilityHash(hashtag, number){
     case("#busy"):
       busy(number);
       break;
+    case ("#report"):
+      report("number");
+      break;
     
     default:
       return false;
@@ -330,6 +368,41 @@ function utilityHash(hashtag, number){
 
   return true;
 }
+
+
+/* report(number)
+ *
+ * This finds the last three messages received by the user, 
+ * and flags them as abusive, for review in the admin panel
+ *
+ *
+ */
+function report(number){
+    // Find all messages sent to recipient
+    // Find all of those whose sender matches the most recent sender
+    // Flag each as abusive
+    var msgQuery = new Parse.Query("msgLog");
+    msgQuery.equalTo("recipient", number);
+    // Sort by most recent
+    msgQuery.descending("createdAt");
+    // Get all messages
+    msgQuery.find(function(msg){
+      if(msg == null){
+        return;
+      }
+      // Scan thru all messages - if the sender matches the most recent message, mark it as abusive
+      for(i = 0; i < msg.length; i++){
+        if(msg[i].get("sender") == msg[0].get("sender")){
+          msg[i].set("reported", true);
+          msg[i].save();
+        }
+      }
+    });
+    sendSMS(number, "Thank you for reporting abusive messages. They have been marked for review.");
+    leave(number);
+
+}
+
 /*This function returns a promise, just so as to keep it asynchronous*/
 
 function leave(number){
