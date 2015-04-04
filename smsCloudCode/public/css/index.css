@@ -1,13 +1,49 @@
+::-webkit-input-placeholder {
+   color: #ffff9d;
+}
 
+:-moz-placeholder { /* Firefox 18- */
+   color: #ffff9d;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #ffff9d;  
+}
+
+:-ms-input-placeholder {  
+   color: #ffff9d;  
+}
+h3{
+	color:#04715f;
+}
+#main-div input{
+	background-color: #fe8353;
+	border:0px;
+	color:white;
+	text-align: center;
+}
+#submit-button{
+	background-color: #04715f;
+	padding:30px 0px 30px 0px;
+	color:white;
+	text-align: center;
+}
+#main-div{
+	margin-top:100px;
+}
 .credits{
 	margin-top:150px;
+	
+}
+.explain-div{
+	background-color: #04715f;
 }
 .sign-up{
-	font-family: 'Comic Sans MS';
 	font-size:1.5em;
 	margin-left: auto;
 	margin-right: auto;
 }
 .sign-in{
 	text-align: center;
+	color: #ffff9d;
 }
