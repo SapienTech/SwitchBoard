@@ -18,13 +18,16 @@ $(function(){
 		var email = username;
 		var phone = $('#phone').val();
 		var password = $('#password').val();
-		user.set("username", username);
-		user.set("email", email);
 		user.set("busyBool", false);
 		user.set("password", password);
 		user.set("groups", ["#swat"]);
 
-		// First format the number
+		// First check email is swat email 
+        // then checks phone number
+        checkEmail(email).then(function(email){
+            user.set("username", username);
+            user.set("email", email);
+            return Parse.Promise.as("Success");
 		formatNumber(phone).then(function(newNumber){
 			user.set("phone", newNumber);
 			return Parse.Promise.as("Success");
@@ -43,6 +46,17 @@ $(function(){
 		});
 	}
 
+
+    function checkEmail(email) {
+        var returnEmail = new Parse.Promise();
+        var n = str.search(/@swarthmore.edu/i);
+        if (n = -1) {
+            returnEmail.reject("Not a valid Swarthmore email address");
+            return returnEmail;
+        }
+        returnEmail.resolve(email);
+        return returnEmail;
+    }
 /* formatNumber(number) -- formats a number into the form +15556666. Returns a promise w/the formatted number, or an error
 
 */
