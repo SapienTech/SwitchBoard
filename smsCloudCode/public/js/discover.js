@@ -78,7 +78,6 @@ $(function(){
               groupsTable.append('<tr class = "joinedRow"><td class = grp>' + group + '</td>' + '<td class = "joined">' + "Joined" + '</td></tr>');
             }
             else{
-              joinStatus = "";
               groupsTable.append('<tr><td class = grp>' + group + '</td>' + '<td class = "joined">' + "" + '</td></tr>');
             }
             
@@ -90,18 +89,21 @@ $(function(){
     function tableClickListener(obj){
       // Grab the row 
         var row = $(obj);
-        row.addClass("joinedRow");
+        
         // Grabs the text of the group
         var grp = row.children().first().text();
         var joined = row.children(".joined");
-        // add to group (unless they're already in)
+        // add to group
         if(!isInGroup(grp)){
           addToGroup(grp);
+          row.addClass("joinedRow");
           joined.html("Joined!");
         }
+        // Or remove them
         else{
           removeFromGroup(grp);
-          alert("You have been removed from this group");
+          row.removeClass("joinedRow");
+          joined.html("");
         }
         
     }
