@@ -34,13 +34,24 @@ $(function(){
 			//need to clear up this redundancy
 			query.equalTo("number", currentUser.get("phone"));
 			query.first().then(function(person){
-        // var groupVar = {};
-        // groupVar[groupName] = 0;
+
 				person.add("groups", groupName);
 				return person.save();	
 			});
 		});
 	}
+  function removeFromGroup(groupName){
+    var currentUser = Parse.User.current();
+    currentUser.remove("groups", groupName);
+    currentUser.save().then(function(currentUser){
+      var query = new Parse.Query("Person");
+      query.equalTo("number", currentUser.get("phone"));
+      query.first().then(function(person){
+        person.remove("groups", groupName);
+        return person.save(); 
+      });
+    });
+  }
 
     function makeTable(){
       var memberGroups = getMemberGroups();
@@ -86,11 +97,11 @@ $(function(){
         // add to group (unless they're already in)
         if(!isInGroup(grp)){
           addToGroup(grp);
-          alert("Joined" + grp);
           joined.html("Joined!");
         }
         else{
-          alert("You are already a member of " + grp + " !");
+          removeFromGroup(grp);
+          alert("You have been removed from this group");
         }
         
     }

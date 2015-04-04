@@ -104,7 +104,7 @@ function logMSG(sender, recipient, body){
   msg.save();
   // If we have more than 3 messages for a recipient, delete the oldest one
   var msgQuery = new Parse.Query("msgLog");
-  msg.equalTo("recipient", recipient);
+  msgQuery.equalTo("recipient", recipient);
   msgQuery.descending("createdAt");
   msgQuery.find().then(function(results){
     if(results.length > 3){
@@ -112,9 +112,6 @@ function logMSG(sender, recipient, body){
       results[3].destroy();
     }
   });
-
-  // Need some logic for only saving three messages
-
 
 }
 
@@ -197,7 +194,6 @@ function routeHashtag(request, hashtag) {
   query.find().then(function(groups) {
     // Testing code, sends a text if group exists.
     if (groups.length > 0) {
-      sendSMS(request.params.From, "Group exists");
 
        /*group does exist. Get a user who belongs to one of
         these groups and is available*/ 
@@ -284,9 +280,7 @@ returns an empty promise (chainable)
 function connectUsers(request, hashtag) {
   // Find a person to partner with
   findPartner(request,hashtag).then(function(partner) {
-    // Testing function: return sender a msg that you've found a user
-
-    sendSMS(request.params.From, (partner.length).toString() + ' user(s) found');
+    sendJoinSMS(request.params.From, hashtag);
 
     // If we found a partner, set info etc
     if (partner.length > 0){
@@ -301,7 +295,7 @@ function connectUsers(request, hashtag) {
 
       return getUserFromNumber(request.params.From).then(function(user){
         user.set("busyBool", false);
-        sendSMS(request.params.From, 'Looks like everyone in ' + hashtag + 'is busy.  Please try again later.');
+        sendSMS(request.params.From, 'Looks like everyone in ' + hashtag + ' is busy.  Please try again later.');
         return user.save();
       }); 
     }
@@ -311,6 +305,15 @@ function connectUsers(request, hashtag) {
   });
 };
 
+/*sendJoinSMS - sends a message to a user when they start a conversation. */
+function sendJoinSMS(number, hashtag){
+  var query = new Parse.Query("Person");
+  query.equalTo("groups", hashtag);
+  query.find().then(function(groupArr){
+    var groupNum = groupArr.length;
+    sendSMS(number, 'Connected to one person out of ' + groupNum + ' in ' + hashtag);
+  });
+}
 //disconnects the phone number from their partner. 
 function disconnect(number) {
   getUserFromNumber(number).then(function(partner) {

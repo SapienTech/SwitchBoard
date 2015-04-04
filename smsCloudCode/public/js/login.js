@@ -5,7 +5,6 @@ $(function(){
 		var password = $('#password').val();
 		Parse.User.logIn(username, password,{}).then(
 			function(user){
-				alert("Login successful!");
 				window.location = "/discover.html";
 			}, function(user, error){
 				alert("Incorrect username and/or password.");

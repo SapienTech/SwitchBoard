@@ -20,9 +20,9 @@ $(function(){
 		var password = $('#password').val();
 		user.set("username", username);
 		user.set("email", email);
-		
+		user.set("busyBool", false);
 		user.set("password", password);
-		user.set("groups", ["#trico"]);
+		user.set("groups", ["#swat"]);
 
 		// First format the number
 		formatNumber(phone).then(function(newNumber){
@@ -36,7 +36,6 @@ $(function(){
 			return makePerson(user.get("phone"));
 		}).then(function(obj){
 			// Then go to new page
-			alert("Signed in.");
 			sendIntroSMS(user.get("phone"));
 			window.location = "/discover.html";
 		}, function(error){
@@ -100,7 +99,6 @@ $(function(){
 		},
   		{
 			success: function(result) {
-				alert("Does this actually work?");
 			},
 			error: function(error) {
 					alert(error);
