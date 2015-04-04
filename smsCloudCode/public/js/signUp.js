@@ -3,6 +3,13 @@ $(function(){
 
 	// Variables
 	var introText = "Welcome to SMS in a Bottle!";
+	var currentUser = Parse.User.current();
+	if(currentUser){
+		window.location = "/discover.html";
+	}
+
+	// If they're logged in, redirect
+
 
 	/*signUp*/
 	function signUp(){

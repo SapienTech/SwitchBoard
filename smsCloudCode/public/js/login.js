@@ -8,7 +8,7 @@ $(function(){
 				alert("Login successful!");
 				window.location = "/discover.html";
 			}, function(user, error){
-				alert("Error logging in. Write code for a more descriptive error.");
+				alert("Incorrect username and/or password.");
 			});
 		});
 });

@@ -5277,8 +5277,8 @@ table {
     font-size: 0.875rem;
     color: #222222;
     text-align: left; }
-  table tr.even, table tr.alt, table tr:nth-of-type(even) {
-    background: #F9F9F9; }
+/*  table tr.even, table tr.alt, table tr:nth-of-type(even) {
+    background: #F9F9F9; }*/
   table thead tr th,
   table tfoot tr th,
   table tfoot tr td,

@@ -1,23 +1,59 @@
 h2{
 	
 }
+table tr td{
+	font-size: 1.1em;
+	font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+	/*color: #ffff9d;*/
+
+}
+
+
+#join{
+	color: #04715f;
+	text-align: center;
+	height:150px;
+	line-height: 50px;
+	font-size: 1.5em;
+}
+#groups-table{
+	background-color:rgba(0,0,0,0);
+	border:0px;
+	height:300px;
+	border-spacing:0px 5px;
+
+}
+.button{
+	background-color: #04715f;
+}
+.grp{
+	color: #ffff9d;
+}
+.joined{
+	color: #ffab67;
+}
+
+.joinedRow{
+	background-color: #fe8353;
+}
 .logout{
 	display: inline-block;
 	margin-right:0px;
+	background-color: #04715f;
+	color: white;
+	text-align: center;
+	font-size:1.1em;
+	/*width:100%;*/
+	/*padding-right: 0px;*/
+}
+.logout:hover{
+	background-color:055145;
+}
+.user-info{
+	text-align: right;
 }
 .user-text{
 	margin-left:10%;
 	text-align:left;
+}
 
-}
-.top-bar{
-	background-color: #423B35;
-	height:75px;
-
-}
-.top-text{
-	color:white;
-	display: inline-block;
-	line-height: 75px;
-	margin-top:0px;
-}

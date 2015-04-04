@@ -1,6 +1,11 @@
 $(function(){ 
 	Parse.initialize("kg3Jvwzxa0HSaJR0J1hVf4B23qqUi9UkwTM9ykH9", "WJ7hKtik8cAtR4e8fdMRTlR7wzBqGNoueRUZMeoV");
 	var currentUserName;
+  $(".logout").click(function(){
+    alert("Logged out!");
+    logout();
+  })
+
   
 	//Still need to authenticate user
   makeTopBar();
@@ -58,7 +63,14 @@ $(function(){
         }).then(function(obj){
           for(var i = 0; i < groupsArray.length; i++){
             group = groupsArray[i];
-            groupsTable.append('<tr><td>' + group + '</td>' + '<td class = "joined">' + isInGroup(group) + '</td></tr>');
+            if (isInGroup(group)){
+              groupsTable.append('<tr class = "joinedRow"><td class = grp>' + group + '</td>' + '<td class = "joined">' + "Joined" + '</td></tr>');
+            }
+            else{
+              joinStatus = "";
+              groupsTable.append('<tr><td class = grp>' + group + '</td>' + '<td class = "joined">' + "" + '</td></tr>');
+            }
+            
           }
         }, function(error){});
     }
@@ -67,6 +79,7 @@ $(function(){
     function tableClickListener(obj){
       // Grab the row 
         var row = $(obj);
+        row.addClass("joinedRow");
         // Grabs the text of the group
         var grp = row.children().first().text();
         var joined = row.children(".joined");
@@ -74,7 +87,7 @@ $(function(){
         if(!isInGroup(grp)){
           addToGroup(grp);
           alert("Joined" + grp);
-          joined.html("true");
+          joined.html("Joined!");
         }
         else{
           alert("You are already a member of " + grp + " !");
