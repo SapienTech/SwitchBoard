@@ -108,6 +108,7 @@ $(function(){
 
 	// Set up our event handlers
 	$("#submit-button").click(function(){
+		alert("SUBMIT");
 		signUp();
 	});
 });
