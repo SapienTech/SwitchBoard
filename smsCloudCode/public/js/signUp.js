@@ -28,6 +28,8 @@ $(function(){
             user.set("username", username);
             user.set("email", email);
             return Parse.Promise.as("Success");
+        });
+        
 		formatNumber(phone).then(function(newNumber){
 			user.set("phone", newNumber);
 			return Parse.Promise.as("Success");
@@ -57,6 +59,7 @@ $(function(){
         returnEmail.resolve(email);
         return returnEmail;
     }
+
 /* formatNumber(number) -- formats a number into the form +15556666. Returns a promise w/the formatted number, or an error
 
 */
