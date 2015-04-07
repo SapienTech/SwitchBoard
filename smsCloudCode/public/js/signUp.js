@@ -28,9 +28,9 @@ $(function(){
             user.set("username", username);
             user.set("email", email);
             return Parse.Promise.as("Success");
-        });
-        
-		formatNumber(phone).then(function(newNumber){
+        }).then(function(obj){
+			return formatNumber(phone);
+		}).then(function(newNumber){
 			user.set("phone", newNumber);
 			return Parse.Promise.as("Success");
 		}).then(function(obj){
