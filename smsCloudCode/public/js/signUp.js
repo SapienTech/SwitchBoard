@@ -51,7 +51,7 @@ $(function(){
 
     function checkEmail(email) {
         var returnEmail = new Parse.Promise();
-        var n = str.search(/@swarthmore.edu/i);
+        var n = email.search(/@swarthmore.edu/i);
         if (n = -1) {
             returnEmail.reject("Not a valid Swarthmore email address");
             return returnEmail;
