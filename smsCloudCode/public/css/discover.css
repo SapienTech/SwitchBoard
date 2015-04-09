@@ -8,7 +8,6 @@ table tr td{
 
 }
 
-
 #join{
 	color: #04715f;
 	text-align: center;
@@ -48,6 +47,7 @@ table tr td{
 }
 .logout:hover{
 	background-color:055145;
+	color:rgb(56, 62, 63);
 }
 .user-info{
 	text-align: right;
