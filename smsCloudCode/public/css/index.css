@@ -39,19 +39,7 @@ li{
 	color:#ffff9d;
 	text-align: center;
 }
-#submit-button{
-	background-color: #04715f;
-	padding:30px 0px 30px 0px;
-	color:white;
-	text-align: center;
-	font-size: 2em;
-	transition: background-color 0.25s, color 0.25s;
-	border-radius: 10px;
-}
-#submit-button:hover{
-	background-color: #0C5649;
-	color: rgb(56, 62, 63);
-}
+
 .credits{
 	position: relative;
 }
