@@ -98,20 +98,18 @@ $(function(){
 */
     function verifyNumber(number) { 
 		var validNum = new Parse.Promise();
-        var validNumber;
+        var validNumber = number;
         var check = new Parse.Query("User");
-        query.equalTo("phone", number);
-        query.find().then(function(matches) {
+        check.equalTo("phone", number);
+        check.find().then(function(matches) {
             if (matches.length > 0) {
                 validNum.reject("Phone number already in use");
-                return validNum;
             }
             else {
-                validNumber = number;
                 validNum.resolve(validNumber);
-                return validNum;
             }
-        }
+        });
+        return validNum;
     }
 
 
