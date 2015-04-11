@@ -53,15 +53,6 @@ li{
 	color: rgb(56, 62, 63);
 }
 
-.credits{
-	padding-top:35px;
-	padding-bottom:35px;
-	background-color: #04715f;
-	
-}
-.credits h2{
-	color:white;
-}
 .explain-div{
 	color:#243341;
 	background-color: #79bd8f;
@@ -81,5 +72,8 @@ li{
 }
 .quickSorta{
 	color:#243341;
+}
+.quickSorta:hover{
+	color:rgb(56, 62, 63);
 }
 

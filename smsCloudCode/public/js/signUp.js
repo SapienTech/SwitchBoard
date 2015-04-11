@@ -134,4 +134,10 @@ $(function(){
 		signUp();
 	});
 
+	// Frivilous shit
+	
+	$(".quickSorta").click(function(){
+		alert("This doesn't go anywhere, but I like the way you think.");
+	});
+
 });
