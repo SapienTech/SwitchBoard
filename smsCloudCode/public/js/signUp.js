@@ -124,8 +124,14 @@ $(function(){
 	}
 
 	// Set up our event handlers
+	$(document).keydown(function(e){
+		var key = e.which;
+		if(key == 13){
+			$("#submit-button").click();
+		}
+	})
 	$("#submit-button").click(function(){
-		alert("SUBMIT");
 		signUp();
 	});
+
 });

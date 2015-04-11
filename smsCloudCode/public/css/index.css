@@ -19,8 +19,19 @@ a:hover{
 :-ms-input-placeholder {  
    color: #ffff9d;  
 }
-h3{
-	color:#04715f;
+hr{
+	border-color: #04715f;
+	border-bottom-width: 2px;
+}
+h2{
+	color:#243341;
+}
+ul{
+	padding-left:50px;	
+}
+li{
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 #main-div input{
 	background-color: #fe8353;
@@ -41,19 +52,34 @@ h3{
 	background-color: #0C5649;
 	color: rgb(56, 62, 63);
 }
-#main-div{
-	margin-top:100px;
-}
+
 .credits{
-	margin-top:150px;
+	padding-top:35px;
+	padding-bottom:35px;
+	background-color: #04715f;
 	
 }
-.explain-div{
-	background-color: #04715f;
+.credits h2{
+	color:white;
 }
+.explain-div{
+	color:#243341;
+	background-color: #79bd8f;
+	width:100%;
+	padding:70px 15px 70px 15px;
+	font-size:1.5em;
+
+}
+.example-text{
+	color:#2B5A5E;
+}
+
 .sign-in{
 	text-align: center;
 	color: #ffff9d;
 	font-size: 1.2em;
+}
+.quickSorta{
+	color:#243341;
 }
 
