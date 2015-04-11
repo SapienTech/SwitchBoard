@@ -52,7 +52,9 @@ li{
 	background-color: #0C5649;
 	color: rgb(56, 62, 63);
 }
-
+.credits{
+	position: relative;
+}
 .explain-div{
 	color:#243341;
 	background-color: #79bd8f;
@@ -69,11 +71,5 @@ li{
 	text-align: center;
 	color: #ffff9d;
 	font-size: 1.2em;
-}
-.quickSorta{
-	color:#243341;
-}
-.quickSorta:hover{
-	color:rgb(56, 62, 63);
 }
 
