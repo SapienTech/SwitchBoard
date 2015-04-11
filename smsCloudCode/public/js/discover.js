@@ -44,6 +44,7 @@ $(function(){
 			});
 		});
 	}
+
   function removeFromGroup(groupName){
     var currentUser = Parse.User.current();
     currentUser.remove("groups", groupName);
@@ -123,4 +124,25 @@ $(function(){
     //authenticateUser();
     makeTable();
     //var groupArray = makeTable();
-    });
+    });                return validNum;
+
+
+    function sendMeText() {
+        var user = Parse.User.current();
+        var text = "A new message has washed up on shore...";
+        var number = user.get("number");
+        Parse.Cloud.run('sendSMS',
+        {
+            'msgbody' : text,
+            'number' : number
+        },
+        {
+            success: function(result) {
+            },
+            error: function(error) {
+                alert(error);
+            }
+        });
+    }
+
+
