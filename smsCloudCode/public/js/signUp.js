@@ -30,7 +30,7 @@ $(function(){
             return Parse.Promise.as("Success");
         }).then(function(obj){
 			return formatNumber(phone);
-		}).then(function(newNumber){
+        }).then(checkPhone(newNumber)).then(function(newNumber){
 			user.set("phone", newNumber);
 			return Parse.Promise.as("Success");
 		}).then(function(obj){
