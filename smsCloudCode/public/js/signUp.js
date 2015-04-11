@@ -30,8 +30,10 @@ $(function(){
             return Parse.Promise.as("Success");
         }).then(function(obj){
 			return formatNumber(phone);
-        }).then(checkPhone(newNumber)).then(function(newNumber){
-			user.set("phone", newNumber);
+        }).then(function(newNumber){
+            return verifyNumber(newNumber);
+        }).then(function(validNumber){
+			user.set("phone", validNumber);
 			return Parse.Promise.as("Success");
 		}).then(function(obj){
 			// Then call signup
@@ -91,6 +93,27 @@ $(function(){
 		//return the promise
 		return returnNum;
 	}
+
+/* ensures no phone duplicates, may want to do a phone verify after beta
+*/
+    function verifyNumber(number) { 
+		var validNum = new Parse.Promise();
+        var validNumber;
+        var check = new Parse.Query("User");
+        query.equalTo("phone", number);
+        query.find().then(function(matches) {
+            if (matches.length > 0) {
+                validNum.reject("Phone number already in use");
+                return validNum;
+            }
+            else {
+                validNumber = number;
+                validNum.resolve(validNumber);
+                return validNum;
+            }
+        }
+    }
+
 
 
 /* makePerson - returns a promise of a saved person.
