@@ -50,6 +50,8 @@ h3{
 }
 .explain-div{
 	background-color: #04715f;
+	width:100%;
+	padding:30px;
 }
 .sign-in{
 	text-align: center;
