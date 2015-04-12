@@ -8,7 +8,10 @@
 	}
 	#main-div{
 	
-}
+	}
+	.explain-div{
+		font-size:0.8em;
+	}
 }
 /*Non-Mobile*/
 @media only screen and (min-width: 40.063em) { 
@@ -21,6 +24,9 @@
 		border-radius:10px;
 		margin-top:170px;
 		margin-bottom:170px;
+	}
+	.explain-div{
+		font-size:1.5em;
 	}
 
 }
@@ -88,9 +94,6 @@ h3{
 	padding-top:35px;
 	padding-bottom:35px;
 	background-color: #04715f;
-	position:fixed;
-	bottom:0px;
-	width:100%;
 }
 .credits h2{
 	color:white;
