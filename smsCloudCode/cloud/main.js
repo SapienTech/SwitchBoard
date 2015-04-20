@@ -526,11 +526,11 @@ Parse.Cloud.job("manageUsers", function(request, status) {
       unbusy(user, 1);
   });
   console.log("Finished running unBusy");
-  // Disconnect users who have been inactive for more than 5 minutes. 
+  // Disconnect users who have been inactive for more than 15 minutes. 
   var timeoutQuery = new Parse.Query("Person");
   timeoutQuery.notEqualTo("partner", "");
   timeoutQuery.each(function(user){
-    timeout(user, 5.0);
+    timeout(user, 15.0);
   });
 
 });
@@ -542,17 +542,12 @@ Parse.Cloud.job("manageUsers", function(request, status) {
 function unbusy(user, minutes){
   // test timestamp
   var timeDifference = getServerTime() - getUserTime(user);
-  console.log("Time difference is: " + timeDifference);
   // How many minutes we need them to be busy for before we unbusy
   if(timeDifference > (minutes * 60) ) {
-    console.log("Found a user who was busied more than a minute ago. Unbusying.")
     user.set("busyBool", false);
     user.save(); 
   }
-  else{
-    console.log("This user wasn't unbusied long enough ago. Not unbusying. ")
-  }
-}
+};
 
 /* timeout (user, minutes) - times out a user if they have been vacant for too long
 
@@ -563,29 +558,19 @@ function timeout(user, minutes){
   var timeDifference = curTime - lastUpdated;
   var number = user.get("number");
   var partnerNum = user.get("partner");
-  console.log("Calculating time out between users. Servertime:" + curTime + ", last updated time: " + lastUpdated + ", timeDifference = " + timeDifference + "testing against:" + (minutes * 60));
   if(timeDifference > (minutes * 60) ){ 
     disconnect(number);
-    disconnect(partnerNum);
-    console.log("disconnected due to inactivity");
   }
-}
-
-
-
-
+};
 
 /* getUserTime (user) - returns the amount of seconds since 1970 of the updatedAt user field
  *
  *
  */
 function getUserTime(user){
-  console.log("Calculating userTime...");
-  // This isn't being got for some reason
   var userLastActive = user.updatedAt;
   var userDate = new Date(userLastActive);
   var time = userDate.getTime();
-  console.log("done calculating user time.");
   // Returns the updated at time in seconds
   return time/1000.0;
 }
