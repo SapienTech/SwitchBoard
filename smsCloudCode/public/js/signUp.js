@@ -2,7 +2,7 @@ $(function(){
 	Parse.initialize("kg3Jvwzxa0HSaJR0J1hVf4B23qqUi9UkwTM9ykH9", "WJ7hKtik8cAtR4e8fdMRTlR7wzBqGNoueRUZMeoV");
 
 	// Variables
-	var introText = "Welcome to SMS in a Bottle!";
+	var introText = "Welcome to Switchboard! Reply with '#swat your message' to get started!";
 	var currentUser = Parse.User.current();
 	if(currentUser){
 		window.location = "/discover.html";
@@ -20,8 +20,12 @@ $(function(){
 		var password = $('#password').val();
 		user.set("busyBool", false);
 		user.set("password", password);
+        if(email.search(/@swarthmore.edu/i) == -1){
+		user.set("groups", ["#rtt"]);
+        }
+        else{
 		user.set("groups", ["#swat"]);
-
+        }
 		// First check email is swat email 
         // then checks phone number
         checkEmail(email).then(function(email){
@@ -58,8 +62,7 @@ $(function(){
         /*if (n == -1) {
             returnEmail.reject("Not a valid Swarthmore email address");
             return returnEmail;
-        }
-        */
+        }*/
         returnEmail.resolve(email);
         return returnEmail;
     }
@@ -96,7 +99,7 @@ $(function(){
 		return returnNum;
 	}
 
-/* ensures no phone duplicates, may want to do a phone verify after beta
+/* ensures no phone duplicates
 */
     function verifyNumber(number) { 
 		var validNum = new Parse.Promise();
