@@ -28,7 +28,8 @@ $(function(){
             user.set("username", username);
             user.set("email", email);
             return Parse.Promise.as("Success");
-        }).then(function(obj){
+        })
+       .then(function(obj){
 			return formatNumber(phone);
         }).then(function(newNumber){
             return verifyNumber(newNumber);
@@ -54,10 +55,11 @@ $(function(){
     function checkEmail(email) {
         var returnEmail = new Parse.Promise();
         var n = email.search(/@swarthmore.edu/i);
-        if (n == -1) {
+        /*if (n == -1) {
             returnEmail.reject("Not a valid Swarthmore email address");
             return returnEmail;
         }
+        */
         returnEmail.resolve(email);
         return returnEmail;
     }
