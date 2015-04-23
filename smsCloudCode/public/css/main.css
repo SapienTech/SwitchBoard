@@ -20,7 +20,7 @@
 		font-size: 1.5em;
 	}
 	h2{
-		font-size: 1em;
+		font-size: 1.2em;
 	}
 	h3{
 		font-size: 1em;
@@ -116,11 +116,12 @@ h3{
 	color: rgb(56, 62, 63);
 }
 .credits{
-	padding-top:35px;
-	padding-bottom:35px;
+	padding-top:20px;
+	padding-bottom:20px;
 	background-color: #04715f;
 }
 .credits h2{
+	font-size: 1.1em;
 	color:white;
 }
 .logo{
