@@ -122,7 +122,7 @@ $(function(){
 		var Person = Parse.Object.extend("Person");
   		var person = new Person();
   		person.set("number", phone);
-  		person.set("groups", ["#trico"]);
+  		person.set("groups", ["#swat"]);
   		person.set("busyBool", false);
   		person.set("partner", "");
   		return person.save();
