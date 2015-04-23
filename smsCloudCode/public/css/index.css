@@ -21,7 +21,10 @@ a:hover{
 }
 hr{
 	border-color: #04715f;
-	border-bottom-width: 2px;
+	border-bottom-width: 1px;
+}
+h1{
+	color:#243341;
 }
 h2{
 	color:#243341;

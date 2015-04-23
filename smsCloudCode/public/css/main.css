@@ -2,7 +2,7 @@
 @media only screen and (max-width: 40em) { 
 
 	#main-div{
-		margin-top:px;
+		margin-top:0px;
 		margin-bottom:px;
 		border-radius:0px;
 	}
@@ -11,7 +11,21 @@
 	}
 	.explain-div{
 		font-size:0.8em;
+
 	}
+	.top-description{
+		margin: 20 0 0 0;
+	}
+	h1{
+		font-size: 1.5em;
+	}
+	h2{
+		font-size: 1em;
+	}
+	h3{
+		font-size: 1em;
+	}
+
 }
 /*Non-Mobile*/
 @media only screen and (min-width: 40.063em) { 
@@ -22,13 +36,24 @@
 	}
 	#main-div{
 		border-radius:10px;
-		margin-top:170px;
+		margin-top:100px;
 		margin-bottom:170px;
 	}
 	.explain-div{
 		font-size:1.5em;
 	}
-
+	h1{
+		font-size: 2.25em;
+	}
+	h2{
+		font-size:1.5em;
+	}
+	h3{
+		font-size:1em;
+	}
+	.top-description{
+		margin: 100 0 0 0;
+	}
 }
 
 body{
@@ -47,16 +72,16 @@ h1{
 	text-align: center;
 	/*font-family: 'Comic Sans MS';*/
 	font-weight: bold;
-	font-size:3.5em;
+	
 }
 h2{
 	font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;	
 	text-align: center;
-	font-size:1.5em;
+	
 }
 h3{
 	text-align: center;
-	font-size:1em;
+	
 }
 #main-div input{
 	height:60px;
