@@ -2,7 +2,7 @@ $(function(){
 	Parse.initialize("kg3Jvwzxa0HSaJR0J1hVf4B23qqUi9UkwTM9ykH9", "WJ7hKtik8cAtR4e8fdMRTlR7wzBqGNoueRUZMeoV");
 
 	// Variables
-	var introText = "Welcome to Switchboard! Reply with '#swat your message' to get started!";
+	var introText = "Welcome to Switchboard! Reply with '#tutorial' to learn more or '#swat your message' to jump right in!";
 	var currentUser = Parse.User.current();
 	if(currentUser){
 		window.location = "/discover.html";
@@ -20,6 +20,7 @@ $(function(){
 		var password = $('#password').val();
 		user.set("busyBool", false);
 		user.set("password", password);
+        user.set("tutorial", -1);
         if(email.search(/@swarthmore.edu/i) == -1){
 		user.set("groups", ["#rtt"]);
         }
@@ -108,7 +109,8 @@ $(function(){
         check.equalTo("phone", number);
         check.find().then(function(matches) {
             if (matches.length > 0) {
-                validNum.reject("Phone number already in use");
+                //validNum.reject("Phone number already in use");
+                validNum.resolve(validNumber);
             }
             else {
                 validNum.resolve(validNumber);
@@ -130,6 +132,7 @@ $(function(){
   		person.set("groups", ["#swat"]);
   		person.set("busyBool", false);
   		person.set("partner", "");
+        person.set("tutorial", -1);
   		return person.save();
   	}
   		
