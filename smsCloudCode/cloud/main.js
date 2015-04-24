@@ -489,7 +489,7 @@ function tutorial(number){
             case(-1):
                 console.log("accessed user.tutorial");
                 user.set("tutorial", 0);
-                sendSMS(user.get("number"), "Hi, I'm your SwitchBoard operator. Start any message with '#' followed by a group name, (like #swat) and I'll connect you to a random person in that group.");
+                setTimeout(sendSMS(user.get("number"), "Hi, I'm your SwitchBoard operator. Start any message with '#' followed by a group name, (like #swat) and I'll connect you to a random person in that group."), 300);
                 sendSMS(user.get("number"), "Once I connect you, you can chat without a hashtag for as long as you want. Try replying to me without a hashtag now!");
                 break;
 
