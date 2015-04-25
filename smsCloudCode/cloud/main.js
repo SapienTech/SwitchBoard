@@ -135,8 +135,7 @@ function sendToPartner(request, number){
     }
     // If we don't have a partner, tell them
     else{
-
-      sendSMS(partnerNumber, "Looks like you're not currently in a group! Message with a hashtag to start chatting.");
+      sendSMS(number, "Looks like you're not currently in a group! Message with a hashtag to start chatting.");
 
     }
   }, function(){
@@ -489,16 +488,16 @@ function tutorial(number){
             case(-1):
                 console.log("accessed user.tutorial");
                 user.set("tutorial", 0);
-                setTimeout(sendSMS(user.get("number"), "Hi, I'm your SwitchBoard operator. Start any message with '#' followed by a group name, (like #swat) and I'll connect you to a random person in that group."), 300);
-                sendSMS(user.get("number"), "Once I connect you, you can chat without a hashtag for as long as you want. Try replying to me without a hashtag now!");
+                sendSMS(number, "Hi, I'm your SwitchBoard operator. Start any message with '#' followed by a group name, (like #swat) and I'll connect you to a random person in that group.").then(function(obj){
+                  sendSMS(number, "Once I connect you, you can chat without a hashtag for as long as you want. Try replying to me without a hashtag now!");
+                });
                 break;
-
             case(0): 
                 user.set("tutorial", -1);
-                sendSMS(user.get("number"), "Got it! To leave a conversation, text '#leave' to leave immediately or just wait 15 minutes and I'll automatically disconnect you.");
-                sendSMS(user.get("number"), "To start a new conversation at any point, start with a group hashtag. Start a message with '#swat' to start chatting now!");
+                sendSMS(number, "Got it! To leave a conversation, text '#leave' to leave immediately or just wait 15 minutes and I'll automatically disconnect you.").then(function(obj){
+                  sendSMS(number, "To start a new conversation at any point, start with a group hashtag. Start a message with '#swat' to finish this tutorial and start chatting now!");
+                });
                 break;
-
             default:
                 console.log("went to default");
               return user.save();
@@ -508,12 +507,10 @@ function tutorial(number){
 }
 
 
-
-
 /*We will eventually want to go through all the functions above
 and call this function. This function may way to return a promise?*/
 function sendSMS(recipient, body){
-  Parse.Cloud.run('sendSMS', {
+  return Parse.Cloud.run('sendSMS', {
     'msgbody' : body,
     'number' : recipient
     },{
