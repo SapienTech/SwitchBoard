@@ -2,7 +2,7 @@ $(function(){
 	Parse.initialize("kg3Jvwzxa0HSaJR0J1hVf4B23qqUi9UkwTM9ykH9", "WJ7hKtik8cAtR4e8fdMRTlR7wzBqGNoueRUZMeoV");
 
 	// Variables
-	var introText = "Welcome to SMS in a Bottle!";
+	var introText = "Welcome to Switchboard! Reply with '#tutorial' to learn more or '#swat your message' to jump right in!";
 	var currentUser = Parse.User.current();
 	if(currentUser){
 		window.location = "/discover.html";
@@ -20,15 +20,21 @@ $(function(){
 		var password = $('#password').val();
 		user.set("busyBool", false);
 		user.set("password", password);
+        user.set("tutorial", -1);
+        if(email.search(/@swarthmore.edu/i) == -1){
+		user.set("groups", ["#rtt"]);
+        }
+        else{
 		user.set("groups", ["#swat"]);
-
+        }
 		// First check email is swat email 
         // then checks phone number
         checkEmail(email).then(function(email){
             user.set("username", username);
             user.set("email", email);
             return Parse.Promise.as("Success");
-        }).then(function(obj){
+        })
+       .then(function(obj){
 			return formatNumber(phone);
         }).then(function(newNumber){
             return verifyNumber(newNumber);
@@ -54,10 +60,10 @@ $(function(){
     function checkEmail(email) {
         var returnEmail = new Parse.Promise();
         var n = email.search(/@swarthmore.edu/i);
-        if (n == -1) {
+        /*if (n == -1) {
             returnEmail.reject("Not a valid Swarthmore email address");
             return returnEmail;
-        }
+        }*/
         returnEmail.resolve(email);
         return returnEmail;
     }
@@ -94,7 +100,7 @@ $(function(){
 		return returnNum;
 	}
 
-/* ensures no phone duplicates, may want to do a phone verify after beta
+/* ensures no phone duplicates
 */
     function verifyNumber(number) { 
 		var validNum = new Parse.Promise();
@@ -103,7 +109,8 @@ $(function(){
         check.equalTo("phone", number);
         check.find().then(function(matches) {
             if (matches.length > 0) {
-                validNum.reject("Phone number already in use");
+                //validNum.reject("Phone number already in use");
+                validNum.resolve(validNumber);
             }
             else {
                 validNum.resolve(validNumber);
@@ -125,6 +132,7 @@ $(function(){
   		person.set("groups", ["#swat"]);
   		person.set("busyBool", false);
   		person.set("partner", "");
+        person.set("tutorial", -1);
   		return person.save();
   	}
   		

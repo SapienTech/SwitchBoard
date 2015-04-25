@@ -34,13 +34,13 @@ Parse.Cloud.define("receiveSMS", function(request, response){
   console.log("Sender number: " +  number);
 
   // Check to see if user exists
-  var userExists;
-  getUserFromNumber(number).then(function(userExists){
+  var user; //this was here before, do we still need it?
+  getUserFromNumber(number).then(function(user){
 
-    if(!userExists){
-      sendSMS(number, "Looks like this isn't a registered number. Please sign up at www.MSGinabottle.com.");
+    if(!user){
+      sendSMS(number, "Looks like this isn't a registered number. Please sign up at SwitchBoard.parseapp.com.");
       return;
-    } 
+    }
     console.log("Proceeding with sendSMS");
 
     hashtag = parseTag(request.params.Body);
@@ -51,16 +51,20 @@ Parse.Cloud.define("receiveSMS", function(request, response){
     }
     //If no hashtag, try to route message
     else if (hashtag == "") {
-      //check to see if user has partner. yes: route message, no: error message
-      sendToPartner(request, number)
+        // 0-4 if yes. 0-4 correspond to tutorial stages. */
+        if (user.get("tutorial") > -1) {
+            tutorial(user.get("number"));
+        }
+        else {
+            //check to see if user has partner. yes: route message, no: error message
+        sendToPartner(request, number)
+        }
     }
     //Else, we do have a hashtag and we need to route it
     else {
       routeHashtag(request, hashtag);
       }
   });
-
-
 
   });
 
@@ -353,18 +357,18 @@ function utilityHash(hashtag, number){
     case("#leave"):
       leave(number);
       break;
-    
     case("#unsubscribe"):
       unsubscribe(number);
       break;
-    
     case("#busy"):
       busy(number);
       break;
     case ("#report"):
       report("number");
       break;
-    
+    case ("#tutorial"):
+      tutorial(number);
+      break;
     default:
       return false;
   }
@@ -447,8 +451,8 @@ function unsubscribe(number) {
     userQuery.equalTo("number", number);
     userQuery.first(function(){});*/
   });
+}
 
-};
 /* busy(number) - sets user busy for a number of hours specified in unBusy. Returns an empty promise (hence all the returns)
 
 */
@@ -468,13 +472,43 @@ function busy(number){
       user.fetch().then(function(){
         user.set("busyBool", true);
         sendSMS(number, "You have been set to busy for one hour.");
-        console.log("changed busyBool to true")
+        console.log("changed busyBool to true");
         return user.save();
       });
     });
   });
 }
   
+  //this will be filled out, with messages corresponding to number of replies
+
+function tutorial(number){
+    getUserFromNumber(number).then(function(user) {
+    //return busy(number).then(function(user) {
+        console.log("this is " + user.get("number"));
+        switch(user.get("tutorial")) {
+            case(-1):
+                console.log("accessed user.tutorial");
+                user.set("tutorial", 0);
+                setTimeout(sendSMS(user.get("number"), "Hi, I'm your SwitchBoard operator. Start any message with '#' followed by a group name, (like #swat) and I'll connect you to a random person in that group."), 300);
+                sendSMS(user.get("number"), "Once I connect you, you can chat without a hashtag for as long as you want. Try replying to me without a hashtag now!");
+                break;
+
+            case(0): 
+                user.set("tutorial", -1);
+                sendSMS(user.get("number"), "Got it! To leave a conversation, text '#leave' to leave immediately or just wait 15 minutes and I'll automatically disconnect you.");
+                sendSMS(user.get("number"), "To start a new conversation at any point, start with a group hashtag. Start a message with '#swat' to start chatting now!");
+                break;
+
+            default:
+                console.log("went to default");
+              return user.save();
+        }
+        return user.save();
+    });
+}
+
+
+
 
 /*We will eventually want to go through all the functions above
 and call this function. This function may way to return a promise?*/
@@ -526,11 +560,11 @@ Parse.Cloud.job("manageUsers", function(request, status) {
       unbusy(user, 1);
   });
   console.log("Finished running unBusy");
-  // Disconnect users who have been inactive for more than 5 minutes. 
+  // Disconnect users who have been inactive for more than 15 minutes. 
   var timeoutQuery = new Parse.Query("Person");
   timeoutQuery.notEqualTo("partner", "");
   timeoutQuery.each(function(user){
-    timeout(user, 5.0);
+    timeout(user, 15.0);
   });
 
 });
@@ -542,17 +576,12 @@ Parse.Cloud.job("manageUsers", function(request, status) {
 function unbusy(user, minutes){
   // test timestamp
   var timeDifference = getServerTime() - getUserTime(user);
-  console.log("Time difference is: " + timeDifference);
   // How many minutes we need them to be busy for before we unbusy
   if(timeDifference > (minutes * 60) ) {
-    console.log("Found a user who was busied more than a minute ago. Unbusying.")
     user.set("busyBool", false);
     user.save(); 
   }
-  else{
-    console.log("This user wasn't unbusied long enough ago. Not unbusying. ")
-  }
-}
+};
 
 /* timeout (user, minutes) - times out a user if they have been vacant for too long
 
@@ -563,29 +592,19 @@ function timeout(user, minutes){
   var timeDifference = curTime - lastUpdated;
   var number = user.get("number");
   var partnerNum = user.get("partner");
-  console.log("Calculating time out between users. Servertime:" + curTime + ", last updated time: " + lastUpdated + ", timeDifference = " + timeDifference + "testing against:" + (minutes * 60));
   if(timeDifference > (minutes * 60) ){ 
     disconnect(number);
-    disconnect(partnerNum);
-    console.log("disconnected due to inactivity");
   }
-}
-
-
-
-
+};
 
 /* getUserTime (user) - returns the amount of seconds since 1970 of the updatedAt user field
  *
  *
  */
 function getUserTime(user){
-  console.log("Calculating userTime...");
-  // This isn't being got for some reason
   var userLastActive = user.updatedAt;
   var userDate = new Date(userLastActive);
   var time = userDate.getTime();
-  console.log("done calculating user time.");
   // Returns the updated at time in seconds
   return time/1000.0;
 }
