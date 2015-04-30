@@ -4,9 +4,6 @@
 
   ---------------------------------------------  */
 
-
-
-
 //handles outgoing text message
 Parse.Cloud.define("sendSMS", function(request, response){
 
@@ -283,10 +280,10 @@ returns an empty promise (chainable)
 function connectUsers(request, hashtag) {
   // Find a person to partner with
   findPartner(request,hashtag).then(function(partner) {
-    sendJoinSMS(request.params.From, hashtag);
-
+    
     // If we found a partner, set info etc
     if (partner.length > 0){
+      sendJoinSMS(request.params.From, hashtag);
       // Set partner's info
       setPartnerInfo(partner[0], request);
       // Set our info (and potentially disconnect current partner)
@@ -314,7 +311,7 @@ function sendJoinSMS(number, hashtag){
   query.equalTo("groups", hashtag);
   query.find().then(function(groupArr){
     var groupNum = groupArr.length;
-    sendSMS(number, 'Connected to one person out of ' + groupNum + ' in ' + hashtag);
+    sendSMS(number, 'Connected to one person out of ' + groupNum + ' in ' + hashtag + ". Feel free to start chatting without a hashtag!");
   });
 }
 //disconnects the phone number from their partner. 
@@ -479,6 +476,16 @@ function busy(number){
 }
   
   //this will be filled out, with messages corresponding to number of replies
+var msg1 = "I'm the switchboard operator. My job is to pair you up with a random person and let you chat anonymously through this number for as long as you want.";
+
+var msg2 = "You can message any group and I'll pair you up with somebody in that group. For example, send me '#swat hello!' and I'll pair you up with a random Swattie.";
+
+var msg3 = "Once I connect you, you can chat normally without a hashtag. To leave, text '#leave' or wait 15 minutes. Text me anything without a hashtag now to continue!";
+
+var msg4 = "Got it. Find popular groups by texting #groups, and join groups on switch-board.io. New groups are added every week.";
+
+var msg5 = "You're ready to go! #Leave this conversation, or begin a message with '#swat' to automatically leave and start chatting!"
+
 
 function tutorial(number){
     getUserFromNumber(number).then(function(user) {
@@ -488,14 +495,16 @@ function tutorial(number){
             case(-1):
                 console.log("accessed user.tutorial");
                 user.set("tutorial", 0);
-                sendSMS(number, "Hi, I'm your SwitchBoard operator. Start any message with '#' followed by a group name, (like #swat) and I'll connect you to a random person in that group.").then(function(obj){
-                  sendSMS(number, "Once I connect you, you can chat without a hashtag for as long as you want. Try replying to me without a hashtag now!");
+                sendSMS(number, msg1).then(function(obj){
+                  sendSMS(number, msg2).then(function(obj){
+                    sendSMS(number, msg3);
+                  });
                 });
                 break;
             case(0): 
                 user.set("tutorial", -1);
-                sendSMS(number, "Got it! To leave a conversation, text '#leave' to leave immediately or just wait 15 minutes and I'll automatically disconnect you.").then(function(obj){
-                  sendSMS(number, "To start a new conversation at any point, start with a group hashtag. Start a message with '#swat' to finish this tutorial and start chatting now!");
+                sendSMS(number, msg4).then(function(obj){
+                  sendSMS(number, msg5);
                 });
                 break;
             default:
@@ -536,7 +545,7 @@ function getUserFromNumber(number) {
   return personQuery.first().then(function(user){
 
     console.log("Found user from number: " + number);
-    var promise = new Parse.Promise();
+    var promise = new Parse.Promise≠–();
     promise.resolve(user);
     return promise;
   }, function(){
