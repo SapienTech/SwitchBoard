@@ -484,7 +484,7 @@ var msg3 = "Once I connect you, you can chat normally without a hashtag. To leav
 
 var msg4 = "Got it. Find popular groups by texting #groups, and join groups on switch-board.io. New groups are added every week.";
 
-var msg5 = "You're ready to go! #Leave this conversation, or begin a message with '#swat' to automatically leave and start chatting!"
+var msg5 = "You're ready to go! #Leave this conversation, or begin a message with '#swat' to automatically leave and start chatting!";
 
 
 function tutorial(number){
@@ -545,7 +545,7 @@ function getUserFromNumber(number) {
   return personQuery.first().then(function(user){
 
     console.log("Found user from number: " + number);
-    var promise = new Parse.Promise≠–();
+    var promise = new Parse.Promise();
     promise.resolve(user);
     return promise;
   }, function(){
