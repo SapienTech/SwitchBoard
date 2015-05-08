@@ -71,7 +71,7 @@ $(function(){
       // Grab the groups:
          getGroups(groupType).then(function(groupsArray){
           for(var i = 0; i < groupsArray.length; i++){
-            group = groupsArray[i];
+            group = groupsArray[i].get("groupName");
             if (isInGroup(group)){
               groupsTable.append('<tr class = "joinedRow"><td class = grp>' + group + '</td>' + '<td class = "joined">' + "Joined" + '</td></tr>');
             }
