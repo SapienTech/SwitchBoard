@@ -152,6 +152,7 @@ $(function(){
 		});
 	}
 
+	$(".logout").innerHTML = "HELLO TEST";
 	// Set up our event handlers
 	$(document).keydown(function(e){
 		var key = e.which;

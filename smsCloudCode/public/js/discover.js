@@ -2,33 +2,17 @@ $(function(){
 	Parse.initialize("kg3Jvwzxa0HSaJR0J1hVf4B23qqUi9UkwTM9ykH9", "WJ7hKtik8cAtR4e8fdMRTlR7wzBqGNoueRUZMeoV");
 	var currentUserName;
   // Handlers
-  $(".logout").click(function(){
-    alert("Logged out!");
-    logout();
-  })
+
   $(".reminder").click(function(){
     sendMeText();
     alert("Hurling a bottle into the ocean...");
   })
 
-  
-	//Still need to authenticate user
-  makeTopBar();
 
   // This returns all of the groups the current user is a member of
   function getMemberGroups(){
     var currentUser = Parse.User.current();
     return currentUser.get("groups");
-  }
-    //this logout function needs to also disassociate User.currert()
-  function logout(){
-    Parse.User.logOut();
-    window.location = "/index.html";
-  }
-
-  function makeTopBar(){
-    var userText = document.getElementById("user-name");
-    userText.innerHTML = Parse.User.current().get("email");
   }
 
   function addToGroup(groupName){

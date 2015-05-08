@@ -3,6 +3,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <script src="//www.parsecdn.com/js/parse-1.3.4.min.js"></script>
     <script src="js/jquery.js"></script>
+    <script src="js/common.js"></script>
     <link rel="stylesheet" href="css/foundation.css" />
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/discover.css" />
@@ -10,30 +11,18 @@
   </head>
   <body>
     <div class = "top-bar" >
-      <div class = "row">
-        <div class = "logo columns medium-5 small-9">
-           SwitchBoard 
-        </div>
-        <div class = "user-info columns show-for-large-only large-5">
-            <h2 class = "top-text user-text">Signed in as <span id = "user-name">undefined</span></h2>
-        </div>
-        <div class = "logout columns large-2 small-3">
-            Logout
-        </div>
-      </div>
     </div>
     <div class = "row">
       <div class = "small-centered small-12 large-8 columns hide-for-small" id = "join">
         </br>Join some groups!</br></br>
-        <a href = "https://docs.google.com/forms/d/1-SNZ7lZdo7TJxoUx5d7NHCjG5ARQseuo7rc54XzjdFc/viewform"> Submit a bug </a>
-        </br>
-        <a href ="https://docs.google.com/forms/d/1wNEylqIeBsheHumQV7Qvd6mW57idPgpL92b01zT4H-g/viewform"> Submit general feedback</a>
       </div>
 
     </div>
     <div class = "row">
       <div class = "medium-6 small-12 small-centered columns" id = "main-div">
-        <table style="width:100%" id = "groups-table">
+        <table style="width:100%" id = "general-table">
+        </table>
+        <table style="width:100%" id = "major-table">
         </table>
       </div>
     </div>
@@ -72,11 +61,6 @@
       </div>
 
      <div class = "credits">
-        <div class = "row">
-          <div class = "columns small-centered small-12 ">
-            <h2>Built by Dylan Jeffers and Michael Piazza <span class = "quickSorta">in spiritual partnership with team quickSorta.</span></h2>
-          </div>
-        </div>
       </div>
   <script src="js/discover.js"></script>
   </body>

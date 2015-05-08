@@ -35,20 +35,7 @@ table tr td{
 .joinedRow{
 	background-color: #fe8353;
 }
-.logout{
-	display: inline-block;
-	margin-right:0px;
-	background-color: #04715f;
-	color: white;
-	text-align: center;
-	font-size:1.1em;
-	/*width:100%;*/
-	/*padding-right: 0px;*/
-}
-.logout:hover{
-	background-color:055145;
-	color:rgb(56, 62, 63);
-}
+
 .user-info{
 	text-align: right;
 }
