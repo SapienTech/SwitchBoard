@@ -2,7 +2,7 @@ h2{
 	
 }
 table tr td{
-	font-size: 1.1em;
+	font-size: 1.2em;
 	font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
 	/*color: #ffff9d;*/
 
@@ -15,7 +15,7 @@ table tr td{
 	line-height: 50px;
 	font-size: 1.5em;
 }
-#groups-table{
+#general-table, #major-table{
 	background-color:rgba(0,0,0,0);
 	border:0px;
 	height:300px;
@@ -43,8 +43,20 @@ table tr td{
 	margin-left:10%;
 	text-align:left;
 }
-.reminder{
-	font-size: 1.2em;
-	margin-bottom:100px;
-}
 
+.table-div{
+	display:inline-block;
+}
+.table-holder{
+	font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+	font-size: 2em;
+	color: #A65D40;
+	text-align: center;
+}
+hr{
+	border-color: #A65D40;
+	width:35%;
+	margin:auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}

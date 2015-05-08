@@ -57,8 +57,8 @@
 }
 
 body{
-	background-color:#beeb9f;
-	font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+	background-color:#84CD90;
+	font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
 }
 a{
 	color:white;
@@ -75,7 +75,7 @@ h1{
 	
 }
 h2{
-	font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;	
+	font-family: "HelveticaNeue-Condensed", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;	
 	text-align: center;
 	
 }
@@ -93,7 +93,7 @@ h3{
 }
 #main-div{
 	/*margin-top:10px;*/
-	background-color:#ff6138;
+	background-color:#FE8353;;
 	padding-top:15px;
 	padding-bottom:15px;
 
@@ -125,38 +125,52 @@ h3{
 	color:white;
 }
 .logo{
+	text-align: center;
 	color:white;
 	font-size:2.5em;
 	font-weight: bold;
 
 }
-.log-holder{
-	/*padding: 15px 0px 15px 0px;*/
-}
-.log-button{
 
-	height:100%;
-	background-color: #04715f;
-	border-radius:30px;
+.log-button{
+	width:80px;
+	height:50px;
+	line-height: 50px;
+
+	margin:auto;
+	margin-top:12.5px;
+	background-color: rgba(0,0,0,0);
+	border-radius:15px;
 	border:1px white solid;
 	color: white;
 	text-align: center;
 	font-size:1.1em;
-
+	transition:background-color 0.25s;
 	/*width:100%;*/
 	/*padding-right: 0px;*/
 }
 .log-button:hover{
 	background-color:055145;
-	color:rgb(56, 62, 63);
+	/*color:rgb(56, 62, 63);*/
 }
-.log-button{
-	transition:background-color 0.25s;
+.middle-text{
+	text-align: center;
 }
 .top-bar{
-	background-color: #04715f;
+	color:white;
+	font-size: 1em;
+	background-color: #368679;
 	height:75px;
 	line-height:75px;
+
+}
+.top-bar a{
+	color:#1B564C;
+}
+
+.top-bar a:hover {
+	color:white;
+	transition:color 0.25s;
 
 }
 .top-text{

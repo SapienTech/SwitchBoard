@@ -3,10 +3,7 @@ $(function(){
   var currentUserName;
   // Handlers
 
-  $(".reminder").click(function(){
-    sendMeText();
-    alert("Hurling a bottle into the ocean...");
-  })
+  
 
 
   //Still need to authenticate user
@@ -98,7 +95,7 @@ $(function(){
       // Grab the groups:
          getGroups(groupType).then(function(groupsArray){
           for(var i = 0; i < groupsArray.length; i++){
-            group = groupsArray[i];
+            group = groupsArray[i].get("groupName");
             if (isInGroup(group)){
               groupsTable.append('<tr class = "joinedRow"><td class = grp>' + group + '</td>' + '<td class = "joined">' + "Joined" + '</td></tr>');
             }
@@ -141,30 +138,12 @@ $(function(){
       }
       return false;
     }
-    //authenticateUser();
+
     makeGeneralTable();
     makeMajorTable();
-    //var groupArray = makeTable();
-    // });                return validNum;
 
 
-    function sendMeText() {
-        var user = Parse.User.current();
-        var text = "A new message has washed up on shore...";
-        var number = user.get("phone");
-        Parse.Cloud.run('sendSMS',
-        {
-            'msgbody' : text,
-            'number' : number
-        },
-        {
-            success: function(result) {
-            },
-            error: function(error) {
-                alert(error);
-            }
-        });
-    }
+
 });
 
 /*
