@@ -7,37 +7,31 @@ $(document).ready(function(){
 			$("#user-name").html(currentUser.get("email"));   
 			// Show logout button
 			$(".log-button").html("Logout");
+			$(".log-button").addClass("log-out");
+			$(".log-button").removeClass("log-in");
 		}
 		else{
 			// Not logged in. Show the login button. 
 			$("#user-name").html("");
 			$(".log-button").html("Login");
+			$(".log-button").addClass("log-in");
+			$(".log-button").removeClass("log-out");
 		}   
 
+		$(".log-out").click(function(){
+			alert("Logged out!");
+			logout();
+		})
+
+		$(".log-in").click(function(){
+			window.location = "/login.html";
+		})
+
+		function logout(){
+	    	Parse.User.logOut();
+	    	window.location = "/index.html";
+	  	}
 	});
-	
-	$(".log-out").click(function(){
-		alert("Logged out!");
-		logout();
-		$(".log-button").toggleClass("log-out");
-		$(".log-button").toggleClass("log-in");
-	})
-
-	$(".log-in").click(function(){
-		alert("Logged in!");
-		$(".log-button").toggleClass("log-out");
-		$(".log-button").toggleClass("log-in");
-	})
-    	// userText.innerHTML = "BLAHBLAH";
-		// makeTopBar()
-	
-	function logout(){
-    	Parse.User.logOut();
-    	window.location = "/index.html";
-  	}
-
-
-
 	$(".credits").load("footer.html");
 	//Still need to authenticate user
 })

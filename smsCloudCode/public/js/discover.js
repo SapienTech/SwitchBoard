@@ -10,7 +10,6 @@ $(function(){
 
 
   //Still need to authenticate user
-  makeTopBar();
 
   // This returns all of the groups the current user is a member of
   function getMemberGroups(){
@@ -20,14 +19,14 @@ $(function(){
 
    //gets groups with group_type identifier
    //note: should consider error checking
-  function getGroups(var group_type) {
+  function getGroups(group_type) {
      var query = new Parse.Query("Groups");
      query.equalTo("type", group_type);
-     query.find().then(function(groupList){
+     return query.find().then(function(groupList){
         var promise = new Parse.Promise();
         promise.resolve(groupList);
         return promise;
-     }
+     });
    }
 
   function addToGroup(groupName){
