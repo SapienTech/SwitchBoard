@@ -13,8 +13,21 @@ $(document).ready(function(){
 			$("#user-name").html("");
 			$(".log-button").html("Login");
 		}   
-	  	
+
 	});
+	
+	$(".log-out").click(function(){
+		alert("Logged out!");
+		logout();
+		$(".log-button").toggleClass("log-out");
+		$(".log-button").toggleClass("log-in");
+	})
+
+	$(".log-in").click(function(){
+		alert("Logged in!");
+		$(".log-button").toggleClass("log-out");
+		$(".log-button").toggleClass("log-in");
+	})
     	// userText.innerHTML = "BLAHBLAH";
 		// makeTopBar()
 	
@@ -22,10 +35,8 @@ $(document).ready(function(){
     	Parse.User.logOut();
     	window.location = "/index.html";
   	}
-  	$(".logout").click(function(){
-		alert("Logged out!");
-		logout();
-	})
+
+
 
 	$(".credits").load("footer.html");
 	//Still need to authenticate user

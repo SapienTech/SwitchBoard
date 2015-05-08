@@ -131,9 +131,10 @@ h3{
 
 }
 .log-holder{
-	padding: 15px 0px 15px 0px;
+	/*padding: 15px 0px 15px 0px;*/
 }
 .log-button{
+
 	height:100%;
 	background-color: #04715f;
 	border-radius:30px;
