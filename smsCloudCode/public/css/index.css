@@ -1,7 +1,15 @@
 /*Mobile only*/
 @media only screen and (max-width: 40em) { 
+	.text h2{
+	color: white;
+	font-size: 1.5em;
+	text-align: center;
+	padding:70px 15px 20px 15px;
+	}
+
 	.index1 {
 		background: url(/images/index1.png) no-repeat center center; 
+		overflow: visible;
 		height: 350px;
 		width: cover;
 		/* Set rules to fill background */
@@ -23,12 +31,13 @@
 	}.index3 {
 		background: url(/images/index3.png) no-repeat center center; 
 		height: 350px;
+
 		width: cover;
 		/* Set rules to fill background */
-		-webkit-background-size: cover;
-		-moz-background-size: cover;
-		-o-background-size: cover;
-		background-size: cover;
+		-webkit-background-size: cover	 ;
+		-moz-background-size: cover	 ;
+		-o-background-size: cover	 ;
+		background-size: cover	 ;
 	}.index4 {
 		background: url(/images/index4.png) no-repeat center center; 
 		height: 350px;
@@ -60,9 +69,17 @@
 		background-size: auto;
 	}
 
+
 }
 /*Non-Mobile*/
 @media only screen and (min-width: 40.063em) { 
+	.text h2{
+	color: white;
+	font-size: 2.5em;
+	text-align: center;
+	padding:70px 15px 20px 15px;
+	}
+
 	.index1 {
 		background: url(/images/index1.png) no-repeat center center; 
 		background-size: 100%;
@@ -85,7 +102,7 @@
 		background-size: cover;
 	}.index3 {
 		background: url(/images/index3.png) no-repeat center center; 
-		height: 420px;
+		height: 530px;
 		width: cover;
 		/* Set rules to fill background */
 		-webkit-background-size: cover;
@@ -101,7 +118,7 @@
 		-moz-background-size: cover;
 		-o-background-size: cover;
 		background-size: cover;
-	}.index5q {
+	}.index5 {
 		background: url(/images/index5.png) no-repeat center center; 
 		height: 350px;
 		width: cover;
@@ -195,12 +212,6 @@ li{
 	font-family: "Helvetica-Light", "Helvetica Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
 }
 
-.text1 h2{
-	color: white;
-	font-size: 2em;
-	text-align: center;
-	padding:70px 15px 20px 15px;
-}
 
 /*.divider {
 	display: block;
