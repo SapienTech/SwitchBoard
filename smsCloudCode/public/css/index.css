@@ -1,3 +1,130 @@
+/*Mobile only*/
+@media only screen and (max-width: 40em) { 
+	.index1 {
+		background: url(/images/index1.png) no-repeat center center; 
+		height: 350px;
+		width: cover;
+		/* Set rules to fill background */
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+	}
+
+	.index2 {
+		background: url(/images/index2.png) no-repeat center center; 
+		height: 350px;
+		width: cover;
+		/* Set rules to fill background */
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+	}.index3 {
+		background: url(/images/index3.png) no-repeat center center; 
+		height: 350px;
+		width: cover;
+		/* Set rules to fill background */
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+	}.index4 {
+		background: url(/images/index4.png) no-repeat center center; 
+		height: 350px;
+		width: cover;
+		/* Set rules to fill background */
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+	}.index5 {
+		background: url(/images/index5.png) no-repeat center center; 
+		height: 350px;
+		width: cover;
+		/* Set rules to fill background */
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+	}
+
+	.divider {
+		background: url(/images/divider.png) no-repeat center center; 
+		height: 100px;
+		width: 100%;
+		/* Set rules to fill background */
+		-webkit-background-size: auto;
+		-moz-background-size: auto;
+		-o-background-size: auto;
+		background-size: auto;
+	}
+
+}
+/*Non-Mobile*/
+@media only screen and (min-width: 40.063em) { 
+	.index1 {
+		background: url(/images/index1.png) no-repeat center center; 
+		background-size: 100%;
+		height: 500px;
+		width: cover;
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+	}
+
+	.index2 {
+		background: url(/images/index2.png) no-repeat center center; 
+		height: 350px;
+		width: cover;
+		/* Set rules to fill background */
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+	}.index3 {
+		background: url(/images/index3.png) no-repeat center center; 
+		height: 420px;
+		width: cover;
+		/* Set rules to fill background */
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+	}.index4 {
+		background: url(/images/index4.png) no-repeat center center; 
+		height: 350px;
+		width: cover;
+		/* Set rules to fill background */
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+	}.index5q {
+		background: url(/images/index5.png) no-repeat center center; 
+		height: 350px;
+		width: cover;
+		/* Set rules to fill background */
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+	}
+	.divider {
+		background: url(/images/divider.png) no-repeat center center; 
+		height: 100px;
+		width: 100%;
+		/* Set rules to fill background */
+		-webkit-background-size: auto;
+		-moz-background-size: auto;
+		-o-background-size: auto;
+		background-size: auto;
+	}
+}
+
+
+
 a{
 	transition: color 0.25s;
 }
@@ -64,3 +191,30 @@ li{
 	font-size: 1.2em;
 }
 
+.intro {
+	font-family: "Helvetica-Light", "Helvetica Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+}
+
+.text1 h2{
+	color: white;
+	font-size: 2em;
+	text-align: center;
+	padding:70px 15px 20px 15px;
+}
+
+/*.divider {
+	display: block;
+	margin-left: auto;
+    margin-right: auto;
+}*/
+
+/*.index1 {
+  background: url(/images/index1.png) no-repeat center center; 
+  height: 100%;
+  width: 100%;
+   Set rules to fill background 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}*/
