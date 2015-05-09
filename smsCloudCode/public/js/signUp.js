@@ -68,37 +68,7 @@ $(function(){
         return returnEmail;
     }
 
-/* formatNumber(number) -- formats a number into the form +15556666. Returns a promise w/the formatted number, or an error
 
-*/
-	function formatNumber(number){
-		var returnNum = new Parse.Promise();
-		var newNumber;
-		// If empty, return error parse promise
-		if(!number.length){
-			returnNum.reject("Phone number is empty.");
-			return returnNum;
-		}
-
-		//Remove anything that's not a number
-		newNumber = number.replace(/\D/g,"");
-
-		//If not a 1 at beginning, add 1.
-		if(newNumber.charAt(0)!="1"){
-			newNumber = "1" + newNumber;
-		}
-		
-		//If phone number is not 11 digits, throw an error
-		if(newNumber.length!=11){
-			returnNum.reject("Please enter a valid phone number.");
-			return returnNum;
-		}
-		//Add a plus at the beginning
-		newNumber = "+" + newNumber;
-		returnNum.resolve(newNumber);
-		//return the promise
-		return returnNum;
-	}
 
 /* ensures no phone duplicates
 */
