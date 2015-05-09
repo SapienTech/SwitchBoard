@@ -11,7 +11,7 @@
 		background: url(/images/index1.png) no-repeat center center; 
 		overflow: visible;
 		height: 350px;
-		width: cover;
+		background-origin: 
 		/* Set rules to fill background */
 		-webkit-background-size: cover;
 		-moz-background-size: cover;
@@ -31,31 +31,27 @@
 	}.index3 {
 		background: url(/images/index3.png) no-repeat center center; 
 		height: 350px;
-
-		width: cover;
 		/* Set rules to fill background */
-		-webkit-background-size: cover	 ;
-		-moz-background-size: cover	 ;
-		-o-background-size: cover	 ;
-		background-size: cover	 ;
+		-webkit-background-size: 250%	 ;
+		-moz-background-size: 250%	 ;
+		-o-background-size: 250%	 ;
+		background-size: 250%;
 	}.index4 {
 		background: url(/images/index4.png) no-repeat center center; 
 		height: 350px;
-		width: cover;
 		/* Set rules to fill background */
-		-webkit-background-size: cover;
-		-moz-background-size: cover;
-		-o-background-size: cover;
-		background-size: cover;
+		-webkit-background-size: 250%;
+		-moz-background-size: 250%;
+		-o-background-size: 250%;
+		background-size: 250%;
 	}.index5 {
 		background: url(/images/index5.png) no-repeat center center; 
 		height: 350px;
-		width: cover;
 		/* Set rules to fill background */
-		-webkit-background-size: cover;
-		-moz-background-size: cover;
-		-o-background-size: cover;
-		background-size: cover;
+		-webkit-background-size: 100%;
+		-moz-background-size: 100%;
+		-o-background-size: 100%;
+		background-size: 100%;
 	}
 
 	.divider {

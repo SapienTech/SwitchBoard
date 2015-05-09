@@ -3,8 +3,9 @@
 
 	#main-div{
 		margin-top:0px;
-		margin-bottom:px;
+		/*margin-bottom:px;*/
 		border-radius:0px;
+		height:80vh;
 	}
 	#main-div{
 		font-size: 0.8em;
@@ -16,10 +17,14 @@
 		background-color: #C26A48;
 		text-align: center;
 		font-size: 1.5em;
-		height:39vh;
-		line-height: 39vh;
+		margin-top:15vh;
+		height:10vh;
+		line-height: 10vh;
 		width:100vw;
 		border-radius: 0px;
+	}
+	.button-common:hover{
+		background-color:#A1583B;
 	}
 	.explain-div{
 		font-size:0.8em;
@@ -40,6 +45,9 @@
 		height:5vh;
 		margin-top:2.5vh;
 		line-height:5vh;
+	}
+	.top-bar{
+		height:10vh;
 	}
 	.top-description{
 		margin: 20 0 0 0;
@@ -64,6 +72,7 @@
 		height:300px;
 	}
 	#main-div{
+		
 		border-radius:10px;
 		margin-top:100px;
 		margin-bottom:170px;
@@ -82,8 +91,12 @@
 		background-color: #04715f;
 
 	}
-
+	.button-common:hover{
+		background-color: #0C5649;
+		color: rgb(56, 62, 63);
+	}
 	.credits{
+		height:10vh;
 		padding-top:20px;
 		padding-bottom:20px;
 	}
@@ -93,6 +106,13 @@
 	}
 	.explain-div{
 		font-size:1.5em;
+	}
+	.log-button{
+		height:50px;
+		margin:auto;
+		margin-top:12.5px;
+		line-height:50px;
+
 	}
 	.logo{
 		font-size:2.5em;
@@ -105,6 +125,10 @@
 	}
 	h3{
 		font-size:1em;
+	}
+	.top-bar{
+		line-height: 75px;
+		height:75px;
 	}
 	.top-description{
 		margin: 100 0 0 0;
@@ -130,9 +154,12 @@ h1{
 	
 }
 h2{
-	font-family: "HelveticaNeue-Condensed", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;	
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Light", Helvetica, Roboto, Arial, sans-serif;	
 	text-align: center;
 	
+}
+h2 span{
+	font-size: 1.3em;
 }
 h3{
 	text-align: center;
@@ -160,17 +187,15 @@ h3{
 	transition: background-color 0.25s, color 0.25s;
 
 }
+
 .buffer{
 	height:200px;
 }
 
 .credits{
-	background-color: #04715f;
+	background-color: #2C2C2C;
 }
-.button-common:hover{
-	background-color: #0C5649;
-	color: rgb(56, 62, 63);
-}
+
 .logo{
 	text-align: center;
 	color:white;
@@ -203,7 +228,7 @@ h3{
 	color:white;
 	font-size: 1em;
 	background-color: #368679;
-	height:75px;
+	/*height:75px;*/
 	/*line-height:75px;*/
 
 }
