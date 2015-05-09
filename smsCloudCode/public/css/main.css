@@ -7,11 +7,39 @@
 		border-radius:0px;
 	}
 	#main-div{
-	
+		font-size: 0.8em;
+	}
+	#main-div input{
+		height:10vh;
+	}
+	.button-common{
+		background-color: #C26A48;
+		text-align: center;
+		font-size: 1.5em;
+		height:39vh;
+		line-height: 39vh;
+		width:100vw;
+		border-radius: 0px;
 	}
 	.explain-div{
 		font-size:0.8em;
-
+	}
+	.credits{
+		padding-top:1.6vh;
+		height:5vh;
+		line-height: 2.5vh;
+	}
+	.credits h2{
+		font-size: 0.8em;
+		color:white;
+	}
+	.logo{
+		font-size:1em;
+	}
+	.log-button{
+		height:5vh;
+		margin-top:2.5vh;
+		line-height:5vh;
 	}
 	.top-description{
 		margin: 20 0 0 0;
@@ -40,8 +68,34 @@
 		margin-top:100px;
 		margin-bottom:170px;
 	}
+
+	#main-div input{
+		height:60px;
+		font-size: 1.2em;
+	}
+	.button-common{
+		border-radius: 10px;
+		padding:30px 0px 30px 0px;
+		text-align: center;
+		font-size: 2em;
+		
+		background-color: #04715f;
+
+	}
+
+	.credits{
+		padding-top:20px;
+		padding-bottom:20px;
+	}
+	.credits h2{
+		font-size: 1.1em;
+		color:white;
+	}
 	.explain-div{
 		font-size:1.5em;
+	}
+	.logo{
+		font-size:2.5em;
 	}
 	h1{
 		font-size: 2.25em;
@@ -84,10 +138,7 @@ h3{
 	text-align: center;
 	
 }
-#main-div input{
-	height:60px;
-	font-size: 1.2em;
-}
+
 #header-div{
 	margin-top:50px;
 	margin-bottom:50px;
@@ -104,42 +155,33 @@ h3{
 	padding-bottom:5px;
 }
 .button-common{
-	background-color: #04715f;
-	padding:30px 0px 30px 0px;
 	color:white;
-	text-align: center;
-	font-size: 2em;
+	
 	transition: background-color 0.25s, color 0.25s;
-	border-radius: 10px;
+
+}
+.buffer{
+	height:200px;
+}
+
+.credits{
+	background-color: #04715f;
 }
 .button-common:hover{
 	background-color: #0C5649;
 	color: rgb(56, 62, 63);
 }
-.credits{
-	padding-top:20px;
-	padding-bottom:20px;
-	background-color: #04715f;
-}
-.credits h2{
-	font-size: 1.1em;
-	color:white;
-}
 .logo{
 	text-align: center;
 	color:white;
-	font-size:2.5em;
-	font-weight: bold;
-
 }
 
 .log-button{
 	width:80px;
-	height:50px;
-	line-height: 50px;
 
-	margin:auto;
-	margin-top:12.5px;
+
+	/*margin:auto;*/
+	
 	background-color: rgba(0,0,0,0);
 	border-radius:15px;
 	border:1px white solid;
@@ -162,7 +204,7 @@ h3{
 	font-size: 1em;
 	background-color: #368679;
 	height:75px;
-	line-height:75px;
+	/*line-height:75px;*/
 
 }
 .top-bar a{
