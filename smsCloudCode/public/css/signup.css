@@ -1,18 +1,13 @@
 /*Mobile only*/
 @media only screen and (max-width: 40em) { 
 
-/*	#main-div{
-		height:80vh;
-	}
-	.credits{
-		height:10vh;
-	}
-	.top-bar{
-		height:10vh;
-	}
-*/
+
 }
 /*Non-Mobile*/
 @media only screen and (min-width: 40.063em) { 
-
+	.credits{
+		position:absolute;
+		bottom:0px;
+		width:100%;
+	}
 }
