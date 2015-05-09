@@ -1,17 +1,24 @@
 /*Mobile only*/
 @media only screen and (max-width: 40em) { 
-
+	body{
+		background-color: #FE8353;
+	}
 	#main-div{
 		margin-top:0px;
 		/*margin-bottom:px;*/
 		border-radius:0px;
-		height:80vh;
+		height:500px;
 	}
 	#main-div{
 		font-size: 0.8em;
 	}
 	#main-div input{
-		height:10vh;
+		/*height:10vh;*/
+		height:50dp;
+	}
+	.button-column{
+		position: relative;
+		height:100%;
 	}
 	.button-common{
 		background-color: #C26A48;
@@ -30,9 +37,11 @@
 		font-size:0.8em;
 	}
 	.credits{
-		padding-top:1.6vh;
-		height:5vh;
-		line-height: 2.5vh;
+		/*position: absolute;
+		bottom: 0px;*/
+		margin-bottom: 0px;
+		height:30dp;
+		line-height: 15dp;
 	}
 	.credits h2{
 		font-size: 0.8em;
@@ -41,13 +50,20 @@
 	.logo{
 		font-size:1em;
 	}
-	.log-button{
-		height:5vh;
-		margin-top:2.5vh;
-		line-height:5vh;
+	.header-button{
+		border-radius:5px;
+		display:inline-block;
+		position:absolute;
+		top:25%;
+		height:50%;
+		padding:0 10 0 10;
+		/*margin-top:2.5dp;*/
+		line-height:30px;
+		font-size: 0.8em;
 	}
 	.top-bar{
-		height:10vh;
+		position:relative;
+		height:60px;
 	}
 	.top-description{
 		margin: 20 0 0 0;
@@ -66,6 +82,9 @@
 }
 /*Non-Mobile*/
 @media only screen and (min-width: 40.063em) { 
+	body{
+		background-color:#84CD90;
+	}
 	tbody{
 		/*display:block;*/
 		overflow-y: scroll;
@@ -107,11 +126,17 @@
 	.explain-div{
 		font-size:1.5em;
 	}
-	.log-button{
+	.header-button{
+		border-radius:15px;
+		padding:0 10 0 10;
+		display:inline-block;
+		/*width:50px;*/
 		height:50px;
 		margin:auto;
+		font-size: 1em;
 		margin-top:12.5px;
 		line-height:50px;
+
 
 	}
 	.logo{
@@ -134,10 +159,25 @@
 		margin: 100 0 0 0;
 	}
 }
+/*This is for the placeholder text in the input boxes*/
+::-webkit-input-placeholder {
+   color: #ffff9d;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: #ffff9d;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #ffff9d;  
+}
+
+:-ms-input-placeholder {  
+   color: #ffff9d;  
+}
 
 body{
-	background-color:#84CD90;
-	font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Light", Helvetica, Roboto, Arial, sans-serif;
 }
 a{
 	color:white;
@@ -170,6 +210,7 @@ h3{
 	margin-top:50px;
 	margin-bottom:50px;
 }
+
 #main-div{
 	/*margin-top:10px;*/
 	background-color:#FE8353;;
@@ -177,6 +218,13 @@ h3{
 	padding-bottom:15px;
 
 }
+#main-div input{
+	background-color: #FF8C5F;
+	border:0px;
+	color:#ffff9d;
+	text-align: center;
+}
+
 #main-div .row{
 	padding-top:5px;
 	padding-bottom:5px;
@@ -201,23 +249,21 @@ h3{
 	color:white;
 }
 
-.log-button{
-	width:80px;
-
-
+.header-button{
 	/*margin:auto;*/
 	
 	background-color: rgba(0,0,0,0);
-	border-radius:15px;
+
 	border:1px white solid;
 	color: white;
 	text-align: center;
-	font-size:1.1em;
+	
 	transition:background-color 0.25s;
-	/*width:100%;*/
-	/*padding-right: 0px;*/
 }
-.log-button:hover{
+.hidden-element{
+	display:none;
+}
+.header-button:hover{
 	background-color:055145;
 	/*color:rgb(56, 62, 63);*/
 }
@@ -247,6 +293,9 @@ h3{
 	display: inline-block;
 	line-height: 75px;
 	margin-top:0px;
+}
+.orange{
+	color: #FE8353;
 }
 .quickSorta{
 	color:#243341;

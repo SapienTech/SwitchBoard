@@ -1,7 +1,7 @@
 /*Mobile only*/
 @media only screen and (max-width: 40em) { 
 
-	#main-div{
+/*	#main-div{
 		height:80vh;
 	}
 	.credits{
@@ -10,7 +10,7 @@
 	.top-bar{
 		height:10vh;
 	}
-
+*/
 }
 /*Non-Mobile*/
 @media only screen and (min-width: 40.063em) { 

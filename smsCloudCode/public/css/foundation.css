@@ -1709,7 +1709,7 @@ meta.foundation-mq-topbar {
       z-index: 98;
       margin-top: 2.8125rem; }
 
-.top-bar {
+/*.top-bar {
   overflow: hidden;
   height: 2.8125rem;
   line-height: 2.8125rem;
@@ -1996,8 +1996,8 @@ meta.foundation-mq-topbar {
       color: #777777;
       font-weight: bold;
       font-size: 0.625rem; }
-
-.js-generated {
+*/
+/*.js-generated {
   display: block; }
 
 @media only screen and (min-width: 40.063em) {
@@ -2149,7 +2149,7 @@ meta.foundation-mq-topbar {
       left: 0; }
       .top-bar-section .left li .dropdown li .dropdown {
         left: 100%; }
-
+*/
   .no-js .top-bar-section ul li:hover > a {
     background-color: #555555;
     background: #333333;
