@@ -43,10 +43,10 @@ h1{
 	color:#243341;
 }
 h2{
-	color:#243341;
+	color:white;
 }
 ul{
-	padding-left:50px;	
+	padding-left:20px;	
 }
 li{
 	padding-top: 2px;
@@ -54,12 +54,12 @@ li{
 }
 
 p {
-	color: black;
-	font-size: 20px;
+	color: white;
+	font-size: 16px;
 }
 
 b {
-	font-size: 22px;
+	font-size: 20px;
 	color: orange;
 }
 
@@ -97,5 +97,5 @@ b {
 }
 
 .test-background {
-	background-color: rgba(255, 255, 255, .6);
+	background-color: rgba(110, 136, 131, 0.51);
 }
