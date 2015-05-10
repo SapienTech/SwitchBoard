@@ -427,7 +427,7 @@ function leave(number){
           user.set("tutorial", -1);
           user.save();
         }
-      }
+      });
     }
     var myPromise = new Parse.Promise();
     myPromise.resolve();
