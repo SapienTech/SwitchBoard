@@ -3,17 +3,15 @@
 
 	.text h2{
 	color: white;
-	font-size: 1.5em;
+	font-size: 1em;
 	text-align: center;
 	padding:70px 15px 20px 15px;
 	}
 
-	.index1 {
+.index1 {
 		background: url(/images/index1.png) no-repeat center center; 
-		overflow: visible;
-		height: 350px;
-		background-origin: 
-		/* Set rules to fill background */
+		height: 300px;
+		width: cover;
 		-webkit-background-size: cover;
 		-moz-background-size: cover;
 		-o-background-size: cover;
@@ -22,7 +20,7 @@
 
 	.index2 {
 		background: url(/images/index2.png) no-repeat center center; 
-		height: 350px;
+		height: 225px;
 		width: cover;
 		/* Set rules to fill background */
 		-webkit-background-size: cover;
@@ -31,28 +29,32 @@
 		background-size: cover;
 	}.index3 {
 		background: url(/images/index3.png) no-repeat center center; 
-		height: 350px;
+		height: 175px;
+		width: cover;
 		/* Set rules to fill background */
-		-webkit-background-size: 250%	 ;
-		-moz-background-size: 250%	 ;
-		-o-background-size: 250%	 ;
-		background-size: 250%;
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
 	}.index4 {
-		background: url(/images/index4.png) no-repeat center center; 
-		height: 350px;
+		background: url(/images/index4.png) no-repeat 42.5% 50%; 
+		height: 250px;
+		width: cover;
 		/* Set rules to fill background */
-		-webkit-background-size: 250%;
-		-moz-background-size: 250%;
-		-o-background-size: 250%;
-		background-size: 250%;
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
 	}.index5 {
 		background: url(/images/index5.png) no-repeat center center; 
-		height: 350px;
+		height: 50px;
+		background-repeat:repeat-x;
+		/*width: cover;*/
 		/* Set rules to fill background */
-		-webkit-background-size: 100%;
-		-moz-background-size: 100%;
-		-o-background-size: 100%;
-		background-size: 100%;
+/*		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;*/
+		background-size: 100% 100%;
 	}
 
 	.divider {
@@ -64,6 +66,10 @@
 		-moz-background-size: auto;
 		-o-background-size: auto;
 		background-size: auto;
+	}
+
+	.signup-row{
+		height:200px;
 	}
 
 
@@ -139,6 +145,9 @@
 		-o-background-size: auto;
 		background-size: auto;
 	}
+	.signup-row{
+		height:350px;	
+	}
 }
 
 
@@ -190,6 +199,9 @@ li{
 	text-align: center;
 	color: #ffff9d;
 	font-size: 1.2em;
+}
+.signup-row{
+	background-color: #68B87F;
 }
 
 /*.intro {
