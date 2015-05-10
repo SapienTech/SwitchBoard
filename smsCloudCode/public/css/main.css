@@ -23,11 +23,10 @@
 	.button-common{
 		background-color: #C26A48;
 		text-align: center;
-		font-size: 1.5em;
-		margin-top:15vh;
-		height:10vh;
-		line-height: 10vh;
-		width:100vw;
+		font-size: 0.8em;
+		margin-top:0px;
+		height:40px;
+		line-height: 40px;
 		border-radius: 0px;
 	}
 	.button-common:hover{
@@ -286,7 +285,9 @@ h3{
 .credits{
 	background-color: #2C2C2C;
 }
-
+.footer-links{
+	margin-top:6px;
+}
 .logo{
 	text-align: center;
 	color:white;
