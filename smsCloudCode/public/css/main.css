@@ -50,6 +50,12 @@
 	.logo{
 		font-size:1em;
 		line-height: 60px;
+		height:60px;
+	}
+	.logo img{
+		height:auto;
+		margin-left:0px;
+		margin-top: 13px;
 	}
 	.header-button{
 		border-radius:5px;
@@ -143,6 +149,11 @@
 	.logo{
 		font-size:2.5em;
 		line-height: 75px;
+	}
+	.logo img{
+		height:75%;
+		margin-left:-100px;
+		margin-top: 10px;
 	}
 	h1{
 		font-size: 2.25em;
@@ -249,7 +260,7 @@ h3{
 .logo{
 	text-align: center;
 	color:white;
-	background:url("/images/logo_header.png");
+	background:url("/images/logo_desktop.png");
 	height:75px;
 	background-size: cover;
 	/*width:100%;*/
