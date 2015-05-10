@@ -99,7 +99,7 @@
 
 	.index2 {
 		background: url(/images/index2.png) no-repeat center center; 
-		height: 350px;
+		height: 450px;
 		width: cover;
 		/* Set rules to fill background */
 		-webkit-background-size: cover;
@@ -117,7 +117,7 @@
 		background-size: cover;
 	}.index4 {
 		background: url(/images/index4.png) no-repeat center center; 
-		height: 450px;
+		height: 600px;
 		width: cover;
 		/* Set rules to fill background */
 		-webkit-background-size: cover;
