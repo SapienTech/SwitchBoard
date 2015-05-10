@@ -47,6 +47,17 @@
 		font-size: 0.8em;
 		color:white;
 	}
+
+	#fb {
+		width: 30px;
+  		height: auto;
+	}
+
+	#git {
+		max-width: 65%;
+		max-width: 65%;
+	}
+
 	.logo{
 		font-size:1em;
 		line-height: 60px;
@@ -124,6 +135,17 @@
 		font-size: 1.1em;
 		color:white;
 	}
+
+	#fb {
+		width: 40px;
+		height: auto;
+	}
+
+	#git {
+		max-width: 65%;
+		max-width: 65%;
+	}
+
 	.explain-div{
 		font-size:1.5em;
 	}
@@ -161,6 +183,7 @@
 		margin: 100 0 0 0;
 	}
 }
+
 /*This is for the placeholder text in the input boxes*/
 ::-webkit-input-placeholder {
    color: #ffff9d;
