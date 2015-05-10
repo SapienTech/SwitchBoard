@@ -84,7 +84,7 @@ $(document).ready(function(){
 			$(".signup-column").addClass("hidden-element");
 			// compensate for invisible signup button
 			$(".log-column").addClass("small-offset-6");
-			$(".log-column").removeClass("small-offset-2");
+			$(".log-column").removeClass("small-offset-1");
 		}
 		else{
 			// Not logged in. Show the login button. 
@@ -95,7 +95,7 @@ $(document).ready(function(){
 			$(".signup-column").removeClass("hidden-element");
 			// set proper padding for both buttons
 			$(".log-column").removeClass("small-offset-6");
-			$(".log-column").addClass("small-offset-2");
+			$(".log-column").addClass("small-offset-1");
 		}   
 
 		$(".log-out").click(function(){

@@ -63,7 +63,8 @@
 		line-height: 60px;
 		height:60px;
 		background:url("/images/logo_mobile.png");
-		background-size: 190px 60px;
+		background-size: 171px 54px;
+		background-position:-15% 50%;
 
 	}
 /*	.logo img{
@@ -178,6 +179,7 @@
 		height:75px;
 		background:url("/images/logo_desktop.png");
 		background-size: 238px 75px;
+		background-position:center;
 
 	}
 
@@ -194,6 +196,7 @@
 		line-height: 75px;
 		height:75px;
 	}
+
 	.top-description{
 		margin: 100 0 0 0;
 	}
@@ -288,7 +291,7 @@ h3{
 	text-align: center;
 	color:white;
 	background-repeat: no-repeat;
-	background-position:center;
+	
 	/*width:100%;*/
 }
 
