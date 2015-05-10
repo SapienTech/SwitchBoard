@@ -127,11 +127,11 @@ $(function(){
 		    'number' : number
 		},
   		{
-			success: function(result) {
-			},
-			error: function(error) {
-					alert(error);
-				}
+			// success: function(result) {
+			// },
+			// error: function(error) {
+			// 		alert(error);
+			// 	}
 		});
 	}
 
