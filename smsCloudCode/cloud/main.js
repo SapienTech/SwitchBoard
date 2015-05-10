@@ -369,11 +369,28 @@ function utilityHash(hashtag, number){
     case ("#tutorial"):
       tutorial(number);
       break;
+    case ("#board"):
+      board(number);
+      break;
     default:
       return false;
   }
 
   return true;
+}
+
+function board(number) {
+  var msgBody = 'boards: ';
+  var query = new Parse.Query("Groups");
+  query.equalTo("type", "general");
+  query.each(function(user){
+    if (msgBody.length < 140) {
+      //console.log(user.get("groupName"));
+      msgBody = msgBody + user.get("groupName") + " ";
+    }
+  }).then(function() {
+    sendSMS(number, msgBody);
+  });
 }
 
 /* report(number)
