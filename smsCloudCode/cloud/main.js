@@ -372,7 +372,6 @@ function utilityHash(hashtag, number){
   return true;
 }
 
-
 /* report(number)
  *
  * This finds the last three messages received by the user, 
@@ -417,8 +416,18 @@ function leave(number){
       disconnect(partner);
       console.log("changed busyBool to false");
     }
-    else{
-      sendSMS(number, "Looks like you're not currently partnered with anybody!");
+    else {
+      // if user uses #leave from tutorial:
+      getUserFromNumber(number).then(function(user) {
+        if (user.get("tutorial") == -1) {
+          sendSMS(number, "Looks like you're not currently partnered with anybody!");
+        }
+        else {
+          sendSMS(user.get("number"), "You have exited the tutorial using #leave, don't forget to join your favorite groups at switch-board.io!");
+          user.set("tutorial", -1);
+          user.save();
+        }
+      }
     }
     var myPromise = new Parse.Promise();
     myPromise.resolve();
