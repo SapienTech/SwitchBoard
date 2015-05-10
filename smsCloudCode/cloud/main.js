@@ -35,13 +35,13 @@ Parse.Cloud.define("receiveSMS", function(request, response){
   getUserFromNumber(number).then(function(user){
 
     if(!user){
-      sendSMS(number, "Looks like this isn't a registered number. Please sign up at SwitchBoard.parseapp.com.");
+      sendSMS(number, "Looks like this isn't a registered number. Please sign up at switch-board.io ");
       return;
     }
     console.log("Proceeding with sendSMS");
 
     hashtag = parseTag(request.params.Body);
-    
+
     // If it's a utility hashtag, run that utility and exit
     if(utilityHash(hashtag, number)){
       return;
@@ -444,7 +444,7 @@ function leave(number){
           sendSMS(number, "Looks like you're not currently partnered with anybody!");
         }
         else {
-          sendSMS(user.get("number"), "You have exited the tutorial using #leave, don't forget to join your favorite groups at switch-board.io!");
+          sendSMS(user.get("number"), "You have exited the tutorial using #leave, get started with '#swat [your message]' or join groups at switch-board.io!");
           user.set("tutorial", -1);
           user.save();
         }
