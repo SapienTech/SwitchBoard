@@ -372,7 +372,6 @@ function utilityHash(hashtag, number){
   return true;
 }
 
-
 /* report(number)
  *
  * This finds the last three messages received by the user, 
@@ -417,8 +416,18 @@ function leave(number){
       disconnect(partner);
       console.log("changed busyBool to false");
     }
-    else{
-      sendSMS(number, "Looks like you're not currently partnered with anybody!");
+    else {
+      // if user uses #leave from tutorial:
+      getUserFromNumber(number).then(function(user) {
+        if (user.get("tutorial") == -1) {
+          sendSMS(number, "Looks like you're not currently partnered with anybody!");
+        }
+        else {
+          sendSMS(user.get("number"), "You have exited the tutorial using #leave, don't forget to join your favorite groups at switch-board.io!");
+          user.set("tutorial", -1);
+          user.save();
+        }
+      });
     }
     var myPromise = new Parse.Promise();
     myPromise.resolve();
@@ -431,21 +440,23 @@ function leave(number){
 
 function unsubscribe(number) {
   //if hashtag == "#unsubscribe" then go through unsubscribe process
-  return getUserFromNumber(number).then(function(user){
+  return getUserFromNumber(number).then(function(person){
     // If they have a partner, disconnect the partner
     hasPartner(number).then(function(partnerNum){
       if (partnerNum){
         disconnect(partnerNum);
       }
     }).then(function(){
-      user.destroy();
-      sendSMS(number, "You have been unsubscribed. Hope to see you back soon!");
+      var query = new Parse.Query("User");
+      //console.log(number);
+      query.equalTo("phone", number);
+      query.first().then(function(user) {
+        Parse.Cloud.useMasterKey();
+        user.destroy();
+        person.destroy();
+      });
     });
-
-    // We need code to actually delete the USER
-    /*var userQuery = new Parse.Query("User");
-    userQuery.equalTo("number", number);
-    userQuery.first(function(){});*/
+    sendSMS(number, "You have been unsubscribed. Hope to see you back soon!");
   });
 }
 

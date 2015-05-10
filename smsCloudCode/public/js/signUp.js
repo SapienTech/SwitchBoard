@@ -21,12 +21,13 @@ $(function(){
 		user.set("busyBool", false);
 		user.set("password", password);
         user.set("tutorial", -1);
-        if(email.search(/@swarthmore.edu/i) == -1){
-		user.set("groups", ["#rtt"]);
-        }
-        else{
-		user.set("groups", ["#swat"]);
-        }
+   //      if(email.search(/@swarthmore.edu/i) == -1){
+			// alert("Please use a valid Swarthmore.edu email address.");
+			// return;
+   //      }
+   //      else{
+			// user.set("groups", ["#swat"]);
+   //      }
 		// First check email is swat email 
         // then checks phone number
         checkEmail(email).then(function(email){
@@ -43,6 +44,7 @@ $(function(){
 			return Parse.Promise.as("Success");
 		}).then(function(obj){
 			// Then call signup
+			user.set("groups", ["#swat"]);
 			return user.signUp(null,{});
 		}).then(function(obj){
 			// Then make a user
@@ -51,6 +53,7 @@ $(function(){
 			// Then go to new page
 			sendIntroSMS(user.get("phone"));
 			window.location = "/discover.html";
+			alert("Welcome on board! Routing you a text with more info");
 		}, function(error){
 			alert(error);
 		});
@@ -60,12 +63,23 @@ $(function(){
     function checkEmail(email) {
         var returnEmail = new Parse.Promise();
         var n = email.search(/@swarthmore.edu/i);
-        /*if (n == -1) {
+        if (n == -1) {
             returnEmail.reject("Not a valid Swarthmore email address");
             return returnEmail;
-        }*/
-        returnEmail.resolve(email);
-        return returnEmail;
+        }
+        var check = new Parse.Query("User");
+        check.equalTo("email", email);
+        return check.count().then(function(count){
+        	if(count){
+        		// found a duplicate email
+        		returnEmail.reject("This email is already in use.");
+        		return returnEmail;
+        	}
+        	else{
+        		returnEmail.resolve(email);
+        		return returnEmail;
+        	}
+        })
     }
 
 
@@ -79,8 +93,7 @@ $(function(){
         check.equalTo("phone", number);
         check.find().then(function(matches) {
             if (matches.length > 0) {
-                //validNum.reject("Phone number already in use");
-                validNum.resolve(validNumber);
+                validNum.reject("This number is already in use.");
             }
             else {
                 validNum.resolve(validNumber);

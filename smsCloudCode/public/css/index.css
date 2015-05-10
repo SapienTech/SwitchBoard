@@ -1,5 +1,6 @@
 /*Mobile only*/
 @media only screen and (max-width: 40em) { 
+
 	.text h2{
 	color: white;
 	font-size: 1.5em;
@@ -144,20 +145,8 @@ a{
 a:hover{
 	color:rgb(56, 62, 63);
 }
-::-webkit-input-placeholder {
-   color: #ffff9d;
-}
-
-:-moz-placeholder { /* Firefox 18- */
-   color: #ffff9d;  
-}
-
-::-moz-placeholder {  /* Firefox 19+ */
-   color: #ffff9d;  
-}
-
-:-ms-input-placeholder {  
-   color: #ffff9d;  
+body{
+	background-color:#84CD90;
 }
 hr{
 	border-color: #04715f;
@@ -176,16 +165,11 @@ li{
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
-#main-div input{
-	background-color: #FF8C5F;
-	border:0px;
-	color:#FF8C5F;
-	text-align: center;
-}
 
-.credits{
+
+/*.credits{
 	position: relative;
-}
+}*/
 .explain-div{
 	color:#243341;
 	background-color: #79bd8f;
