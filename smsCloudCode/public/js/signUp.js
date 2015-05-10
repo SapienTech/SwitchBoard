@@ -2,7 +2,7 @@ $(function(){
 	Parse.initialize("kg3Jvwzxa0HSaJR0J1hVf4B23qqUi9UkwTM9ykH9", "WJ7hKtik8cAtR4e8fdMRTlR7wzBqGNoueRUZMeoV");
 
 	// Variables
-	var introText = "Welcome to Switchboard! Reply with '#tutorial' to learn more or '#swat your message' to jump right in!";
+	var introText = "Welcome to switchboard! Reply with '#tutorial' to learn more or '#swat [your message]' to jump right in!";
 	var currentUser = Parse.User.current();
 	if(currentUser){
 		window.location = "/discover.html";
