@@ -50,6 +50,8 @@
 	.logo{
 		font-size:1em;
 		line-height: 60px;
+		height:60px;
+		background:url("/images/logo_mobile.png");
 	}
 	.header-button{
 		border-radius:5px;
@@ -143,6 +145,8 @@
 	.logo{
 		font-size:2.5em;
 		line-height: 75px;
+		height:75px;
+		background:url("/images/logo_desktop.png");
 	}
 	h1{
 		font-size: 2.25em;
@@ -249,8 +253,8 @@ h3{
 .logo{
 	text-align: center;
 	color:white;
-	background:url("/images/logo_header.png");
-	height:75px;
+	
+
 	background-size: cover;
 	/*width:100%;*/
 }
