@@ -440,21 +440,23 @@ function leave(number){
 
 function unsubscribe(number) {
   //if hashtag == "#unsubscribe" then go through unsubscribe process
-  return getUserFromNumber(number).then(function(user){
+  return getUserFromNumber(number).then(function(person){
     // If they have a partner, disconnect the partner
     hasPartner(number).then(function(partnerNum){
       if (partnerNum){
         disconnect(partnerNum);
       }
     }).then(function(){
-      user.destroy();
-      sendSMS(number, "You have been unsubscribed. Hope to see you back soon!");
+      var query = new Parse.Query("User");
+      //console.log(number);
+      query.equalTo("phone", number);
+      query.first().then(function(user) {
+        Parse.Cloud.useMasterKey();
+        user.destroy();
+        person.destroy();
+      });
     });
-
-    // We need code to actually delete the USER
-    /*var userQuery = new Parse.Query("User");
-    userQuery.equalTo("number", number);
-    userQuery.first(function(){});*/
+    sendSMS(number, "You have been unsubscribed. Hope to see you back soon!");
   });
 }
 
