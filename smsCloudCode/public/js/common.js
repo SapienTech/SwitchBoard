@@ -97,7 +97,9 @@ $(document).ready(function(){
 			$(".log-column").removeClass("small-offset-6");
 			$(".log-column").addClass("small-offset-1");
 		}   
-
+		// $(".logo").click(function(){
+		// 	window.location = "/index.html";
+		// })
 		$(".log-out").click(function(){
 			alert("Logged out!");
 			logout();
