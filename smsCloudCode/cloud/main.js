@@ -26,6 +26,7 @@ Parse.Cloud.define("sendSMS", function(request, response){
 
 //called when twilio receives message
 Parse.Cloud.define("receiveSMS", function(request, response){
+  Parse.Analytics.track("receivedSMS",{});
   //parsing the hashtag.
   number = request.params.From;
   console.log("Sender number: " +  number);
@@ -132,6 +133,7 @@ function sendToPartner(request, number){
     if(partnerNumber){
       logMSG(number, partnerNumber, request.params.Body);
       sendSMS(partnerNumber, request.params.Body);
+
 
     }
     // If we don't have a partner, tell them
