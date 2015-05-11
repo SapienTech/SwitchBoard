@@ -7,12 +7,12 @@
 //handles outgoing text message
 Parse.Cloud.define("sendSMS", function(request, response){
 
-    var client = require('twilio')('AC40dc454f2c503e6f4578d9165b313a96', '0d7fd1fa9d97222b263cba34206b563e'); 
+    var client = require('twilio')(APP_KEY, MASTER_KEY); 
      
     client.sendSms({  
       //to: request.params.number,
       to: request.params.number,
-      from:'+12564292078', 
+      from: TWILIO_NUMBER, 
       body: request.params.msgbody
       
 

@@ -1,5 +1,5 @@
 $(function(){
-  Parse.initialize("kg3Jvwzxa0HSaJR0J1hVf4B23qqUi9UkwTM9ykH9", "WJ7hKtik8cAtR4e8fdMRTlR7wzBqGNoueRUZMeoV");
+  Parse.initialize(PARSE_ID, PARSE_MASTER_KEY);
   var currentUserName;
   // Handlers
 
@@ -27,16 +27,16 @@ $(function(){
    }
 
   function addToGroup(groupName){
-             var currentUser = Parse.User.current();
-             currentUser.add("groups", groupName);
-             currentUser.save().then(function(currentUser){
-                     var query = new Parse.Query("Person");
-                     //need to clear up this redundancy
-                     query.equalTo("number", currentUser.get("phone"));
-                     query.first().then(function(person){
+     var currentUser = Parse.User.current();
+     currentUser.add("groups", groupName);
+     currentUser.save().then(function(currentUser){
+       var query = new Parse.Query("Person");
+       //need to clear up this redundancy
+       query.equalTo("number", currentUser.get("phone"));
+       query.first().then(function(person){
 
-                             person.add("groups", groupName);
-                             return person.save();
+               person.add("groups", groupName);
+               return person.save();
       });
     });
   }

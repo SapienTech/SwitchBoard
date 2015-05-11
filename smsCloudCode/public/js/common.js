@@ -28,7 +28,7 @@ function formatNumber(number){
 	}
 	
 $(document).ready(function(){
-	Parse.initialize("kg3Jvwzxa0HSaJR0J1hVf4B23qqUi9UkwTM9ykH9", "WJ7hKtik8cAtR4e8fdMRTlR7wzBqGNoueRUZMeoV");
+	Parse.initialize(PARSE_ID, PARSE_MASTER_KEY);
 	var currentUser = Parse.User.current();
 
 
