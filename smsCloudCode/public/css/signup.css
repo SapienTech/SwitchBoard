@@ -1,7 +1,11 @@
 /*Mobile only*/
 @media only screen and (max-width: 40em) { 
 	body{
-		background-color:#FE8353;
+		/*background-color:#FE8353;*/
+		background-color:#2C2C2C;
+	}
+	.button-common{
+		width:100%;
 	}
 
 }

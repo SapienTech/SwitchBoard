@@ -19,12 +19,12 @@ body{
 	background-attachment: fixed;
 	overflow: visible;
 	height: 1000px;
-	background-origin: 
-	/* Set rules to fill background */
-	-webkit-background-size: cover;
+	background-origin;
+	/*Set rules to fill background*/
+	/*-webkit-background-size: cover;
 	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
+	-o-background-size: cover;*/
+	background-size: 275% 50%;
 }
 a{
 	transition: color 0.25s;
@@ -43,6 +43,7 @@ h1{
 	color:#243341;
 }
 h2{
+	font-size:1.2em;
 	color:white;
 }
 ul{
@@ -55,17 +56,28 @@ li{
 
 p {
 	color: white;
-	font-size: 16px;
+	font-size: 0.9em;
+	margin-top: 20px;
+	margin-top: 30px;
 }
 
 b {
-	font-size: 20px;
-	color: orange;
+	font-size: 1.2em;
+	color: rgb(243, 129, 95);
 }
 
 .switchboard {
-	color: orange;
-	font-size: 24px;g
+	color: rgb(243, 129, 95);
+	font-size: 1.4em;
+}
+
+
+.hashtags p{
+	text-align: center;
+}
+.main-text{
+	padding-top:30px;
+	text-align: justify;
 }
 
 .test-background {

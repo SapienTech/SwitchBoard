@@ -598,7 +598,7 @@ Parse.Cloud.job("manageUsers", function(request, status) {
   var timeoutQuery = new Parse.Query("Person");
   timeoutQuery.notEqualTo("partner", "");
   timeoutQuery.each(function(user){
-    timeout(user, 15.0);
+    timeout(user, 60.0);
   });
 
 });

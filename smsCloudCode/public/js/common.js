@@ -83,8 +83,8 @@ $(document).ready(function(){
 			$(".log-button").removeClass("log-in");
 			$(".signup-column").addClass("hidden-element");
 			// compensate for invisible signup button
-			$(".log-column").addClass("small-offset-6");
-			$(".log-column").removeClass("small-offset-1");
+			// $(".log-column").addClass("small-offset-6");
+			// $(".log-column").removeClass("small-offset-1");
 		}
 		else{
 			// Not logged in. Show the login button. 
@@ -92,10 +92,11 @@ $(document).ready(function(){
 			$(".log-button").html("Login");
 			$(".log-button").addClass("log-in");
 			$(".log-button").removeClass("log-out");
-			$(".signup-column").removeClass("hidden-element");
+			// switch this to removeClass to make the signup appear
+			$(".signup-column").addClass("hidden-element");
 			// set proper padding for both buttons
-			$(".log-column").removeClass("small-offset-6");
-			$(".log-column").addClass("small-offset-1");
+			// $(".log-column").removeClass("small-offset-6");
+			// $(".log-column").addClass("small-offset-1");
 		}   
 		// $(".logo").click(function(){
 		// 	window.location = "/index.html";
