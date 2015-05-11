@@ -68,34 +68,6 @@ b {
 	font-size: 24px;g
 }
 
-#container {
-  position: relative;
-  width: 1000px;
-  height: 1000px;
-}
-
-#how-to-background {
-  background: #CCC;
-  filter: alpha(opacity=60);
-  /* IE */
-  -moz-opacity: 0.6;
-  /* Mozilla */
-  opacity: 0.6;
-  /* CSS3 */
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-}
-#how-to-text {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
 .test-background {
 	background-color: rgba(110, 136, 131, 0.51);
 }

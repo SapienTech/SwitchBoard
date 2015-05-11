@@ -369,7 +369,7 @@ function utilityHash(hashtag, number){
     case ("#tutorial"):
       tutorial(number);
       break;
-    case ("#board"):
+    case ("#boards"):
       board(number);
       break;
     default:
@@ -380,7 +380,7 @@ function utilityHash(hashtag, number){
 }
 
 function board(number) {
-  var msgBody = 'boards: ';
+  var msgBody = 'Current popular boards: ';
   var query = new Parse.Query("Groups");
   query.equalTo("type", "general");
   query.each(function(user){
