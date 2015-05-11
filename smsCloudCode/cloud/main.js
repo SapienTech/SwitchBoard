@@ -35,13 +35,13 @@ Parse.Cloud.define("receiveSMS", function(request, response){
   getUserFromNumber(number).then(function(user){
 
     if(!user){
-      sendSMS(number, "Looks like this isn't a registered number. Please sign up at SwitchBoard.parseapp.com.");
+      sendSMS(number, "Looks like this isn't a registered number. Please sign up at switch-board.io ");
       return;
     }
     console.log("Proceeding with sendSMS");
 
     hashtag = parseTag(request.params.Body);
-    
+
     // If it's a utility hashtag, run that utility and exit
     if(utilityHash(hashtag, number)){
       return;
@@ -59,6 +59,10 @@ Parse.Cloud.define("receiveSMS", function(request, response){
     }
     //Else, we do have a hashtag and we need to route it
     else {
+      if (user.get("tutorial") > -1) {
+        user.set("tutorial", -1);
+        user.save();
+      }
       routeHashtag(request, hashtag);
       }
   });
@@ -365,11 +369,28 @@ function utilityHash(hashtag, number){
     case ("#tutorial"):
       tutorial(number);
       break;
+    case ("#board"):
+      board(number);
+      break;
     default:
       return false;
   }
 
   return true;
+}
+
+function board(number) {
+  var msgBody = 'boards: ';
+  var query = new Parse.Query("Groups");
+  query.equalTo("type", "general");
+  query.each(function(user){
+    if (msgBody.length < 140) {
+      //console.log(user.get("groupName"));
+      msgBody = msgBody + user.get("groupName") + " ";
+    }
+  }).then(function() {
+    sendSMS(number, msgBody);
+  });
 }
 
 /* report(number)
@@ -423,7 +444,7 @@ function leave(number){
           sendSMS(number, "Looks like you're not currently partnered with anybody!");
         }
         else {
-          sendSMS(user.get("number"), "You have exited the tutorial using #leave, don't forget to join your favorite groups at switch-board.io!");
+          sendSMS(user.get("number"), "You have exited the tutorial using #leave, get started with '#swat [your message]' or join groups at switch-board.io!");
           user.set("tutorial", -1);
           user.save();
         }
@@ -487,15 +508,13 @@ function busy(number){
 }
   
   //this will be filled out, with messages corresponding to number of replies
-var msg1 = "I'm the switchboard operator. My job is to pair you up with a random person and let you chat anonymously through this number for as long as you want.";
+var msg1 = "I'm the switchboard operator. My job is to pair you up with a random person and let you chat anonymously through this number.";
 
-var msg2 = "You can message any group and I'll pair you up with somebody in that group. For example, send me '#swat hello!' and I'll pair you up with a random Swattie.";
+var msg2 = "Once I connect you, you can chat normally without a hashtag. Since we're in a conversation, text me anything without a hashtag now to continue!";
 
-var msg3 = "Once I connect you, you can chat normally without a hashtag. To leave, text '#leave' or wait 15 minutes. Text me anything without a hashtag now to continue!";
+var msg3 = "I got it. Find popular boards by texting #boards, and join your favorite ones on switch-board.io.";
 
-var msg4 = "Got it. Find popular groups by texting #groups, and join groups on switch-board.io. New groups are added every week.";
-
-var msg5 = "You're ready to go! #Leave this conversation, or begin a message with '#swat' to automatically leave and start chatting!";
+var msg4 = "To finish, #leave this tutorial, or begin a message with '#swat [your message]' to start chatting!";
 
 
 function tutorial(number){
@@ -507,15 +526,13 @@ function tutorial(number){
                 console.log("accessed user.tutorial");
                 user.set("tutorial", 0);
                 sendSMS(number, msg1).then(function(obj){
-                  sendSMS(number, msg2).then(function(obj){
-                    sendSMS(number, msg3);
-                  });
+                    sendSMS(number, msg2);
                 });
                 break;
             case(0): 
-                user.set("tutorial", -1);
-                sendSMS(number, msg4).then(function(obj){
-                  sendSMS(number, msg5);
+                user.set("tutorial", 1);
+                sendSMS(number, msg3).then(function(obj){
+                  sendSMS(number, msg4);
                 });
                 break;
             default:
@@ -581,7 +598,7 @@ Parse.Cloud.job("manageUsers", function(request, status) {
   var timeoutQuery = new Parse.Query("Person");
   timeoutQuery.notEqualTo("partner", "");
   timeoutQuery.each(function(user){
-    timeout(user, 15.0);
+    timeout(user, 60.0);
   });
 
 });

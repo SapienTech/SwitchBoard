@@ -23,11 +23,10 @@
 	.button-common{
 		background-color: #C26A48;
 		text-align: center;
-		font-size: 1.5em;
-		margin-top:15vh;
-		height:10vh;
-		line-height: 10vh;
-		width:100vw;
+		font-size: 0.8em;
+		margin-top:0px;
+		height:40px;
+		line-height: 40px;
 		border-radius: 0px;
 	}
 	.button-common:hover{
@@ -63,13 +62,16 @@
 		line-height: 60px;
 		height:60px;
 		background:url("/images/logo_mobile.png");
+		background-size: 171px 54px;
+		background-position:-15% 50%;
+
 	}
-	.logo img{
+/*	.logo img{
 		height:auto;
 		margin-left:0px;
 		margin-top: 13px;
 
-	}
+	}*/
 	.header-button{
 		border-radius:5px;
 		display:inline-block;
@@ -175,12 +177,11 @@
 		line-height: 75px;
 		height:75px;
 		background:url("/images/logo_desktop.png");
+		background-size: 238px 75px;
+		background-position:center;
+
 	}
-	.logo img{
-		height:75%;
-		margin-left:-100px;
-		margin-top: 10px;
-	}
+
 	h1{
 		font-size: 2.25em;
 	}
@@ -194,6 +195,7 @@
 		line-height: 75px;
 		height:75px;
 	}
+
 	.top-description{
 		margin: 100 0 0 0;
 	}
@@ -283,11 +285,14 @@ h3{
 .credits{
 	background-color: #2C2C2C;
 }
-
+.footer-links{
+	margin-top:6px;
+}
 .logo{
 	text-align: center;
 	color:white;
-	background-size: cover;
+	background-repeat: no-repeat;
+	
 	/*width:100%;*/
 }
 

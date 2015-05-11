@@ -1,11 +1,19 @@
-h2{
-	
+@media only screen and (max-width: 40em) { 
+	/*mobile*/
+	body{
+		background-color:#FE8353;
+	}
 }
+@media only screen and (min-width: 40.063em) {
+	body{
+		background-color:#E57F57;
+	}
+}
+
 table tr td{
 	font-size: 1.2em;
-	font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+	/*font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;*/
 	/*color: #ffff9d;*/
-
 }
 
 #join{
@@ -48,7 +56,7 @@ table tr td{
 	display:inline-block;
 }
 .table-holder{
-	font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+	/*font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;*/
 	font-size: 2em;
 	color: #A65D40;
 	text-align: center;
