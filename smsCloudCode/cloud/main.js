@@ -493,7 +493,7 @@ function turnOn(number){
   return getUserFromNumber(number).then(function(person){
     person.set("available",1);
     person.set("busyBool", false);
-    sendSMS(number, "You are now available to randomly receieve texts!");
+    sendSMS(number, "You are now available to receieve texts!");
     return person.save();
   });
 }
@@ -547,7 +547,7 @@ function busy(number){
     return query.first().then(function(user) {
       user.fetch().then(function(){
         user.set("busyBool", true);
-        sendSMS(number, "You have been set to unavailable. Send any message to get back into the action!");
+        sendSMS(number, "You have been set to unavailable. Send #on or any other message to get back into the action!");
         console.log("changed busyBool to true");
         return user.save();
       });
