@@ -493,6 +493,7 @@ function turnOn(number){
   return getUserFromNumber(number).then(function(person){
     person.set("available",1);
     person.set("busyBool", false);
+    sendSMS(number, "You are now available to randomly receieve texts!");
     return person.save();
   });
 }
