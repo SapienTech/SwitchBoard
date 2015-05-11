@@ -26,9 +26,18 @@ Parse.Cloud.define("sendSMS", function(request, response){
 
 //called when twilio receives message
 Parse.Cloud.define("receiveSMS", function(request, response){
-  Parse.Analytics.track("receivedSMS",{});
+  
   //parsing the hashtag.
   number = request.params.From;
+
+  // analytics here
+  var msgData = {
+    phoneNumber: number
+  };
+
+  Parse.Analytics.track("receivedSMS", msgData);
+  // end analytics
+
   console.log("Sender number: " +  number);
 
   // Check to see if user exists
@@ -39,7 +48,11 @@ Parse.Cloud.define("receiveSMS", function(request, response){
       sendSMS(number, "Looks like this isn't a registered number. Please sign up at switch-board.io ");
       return;
     }
-    console.log("Proceeding with sendSMS");
+    // console.log("Proceeding with sendSMS");
+    // Unbusy and availabalize user
+    user.set("busyBool", false);
+    user.set("available", 1);
+    user.save();
 
     hashtag = parseTag(request.params.Body);
 
@@ -64,6 +77,13 @@ Parse.Cloud.define("receiveSMS", function(request, response){
         user.set("tutorial", -1);
         user.save();
       }
+      // begin hashtag analytics
+      var grpData = {
+        groupName: hashtag
+      };
+
+      Parse.Analytics.track("beginConvo", grpData);
+      // end analytics
       routeHashtag(request, hashtag);
       }
   });
@@ -300,7 +320,7 @@ function connectUsers(request, hashtag) {
     else {
 
       return getUserFromNumber(request.params.From).then(function(user){
-        user.set("busyBool", false);
+        // user.set("busyBool", false);
         sendSMS(request.params.From, 'Looks like everyone in ' + hashtag + ' is busy.  Please try again later.');
         return user.save();
       }); 
@@ -374,6 +394,13 @@ function utilityHash(hashtag, number){
     case ("#boards"):
       board(number);
       break;
+    case ("#on"):
+      turnOn(number);
+      break;
+    case ("#off"):
+      turnOff(number);
+      break;
+
     default:
       return false;
   }
@@ -394,6 +421,7 @@ function board(number) {
     sendSMS(number, msgBody);
   });
 }
+
 
 /* report(number)
  *
@@ -461,6 +489,23 @@ function leave(number){
   });
 }
 
+function turnOn(number){
+  return getUserFromNumber(number).then(function(person){
+    person.set("available",1);
+    person.set("busyBool", false);
+    return person.save();
+  });
+}
+
+function turnOff(number){
+  return getUserFromNumber(number).then(function(person){
+    person.set("available",0);
+    return person.save().then(function(obj){
+      return busy(number);
+    });
+  });
+}
+
 function unsubscribe(number) {
   //if hashtag == "#unsubscribe" then go through unsubscribe process
   return getUserFromNumber(number).then(function(person){
@@ -501,7 +546,7 @@ function busy(number){
     return query.first().then(function(user) {
       user.fetch().then(function(){
         user.set("busyBool", true);
-        sendSMS(number, "You have been set to busy for one hour.");
+        sendSMS(number, "You have been set to unavailable. Send any message to get back into the action!");
         console.log("changed busyBool to true");
         return user.save();
       });
@@ -589,20 +634,39 @@ Parse.Cloud.job("manageUsers", function(request, status) {
   console.log("Running unBusy");
   currentTime = getServerTime();
   var busyQuery = new Parse.Query("Person");
+
   // For users without a partner, AND with busybool = true, unbusy
   busyQuery.equalTo("partner","");
   busyQuery.equalTo("busyBool", true);
+  busyQuery.equalTo("available", 1);
   busyQuery.each(function(user) {
-      unbusy(user, 1);
+      unbusy(user, 480);
   });
   console.log("Finished running unBusy");
   // Disconnect users who have been inactive for more than 15 minutes. 
   var timeoutQuery = new Parse.Query("Person");
   timeoutQuery.notEqualTo("partner", "");
   timeoutQuery.each(function(user){
-    timeout(user, 60.0);
+    timeout(user, 30.0);
   });
 
+});
+
+Parse.Cloud.job("adminMessage", function(request, status){
+  var query = new Parse.Query("Person");
+  query.each(function(user){
+    var msg = "[SWITCHBOARD OPERATOR]: '#off' now turns off switchboard when you need to study. afterwards, send any message to jump back in. happy chatting!";
+    sendSMS(user.get("number"), msg);
+  });
+});
+
+Parse.Cloud.job("testMessage", function(request, status){
+  var query = new Parse.Query("Person");
+  query.equalTo("number", "+13109987101");
+  query.each(function(user){
+    var msg = "[SWITCHBOARD OPERATOR MESSAGE]: new feature - message '#off' to stop receiving texts. Send any other message to get back in the game. Happy chatting!";
+    sendSMS(user.get("number"), msg);
+  });
 });
 
 /* unbusy(user, minutes) -- unbusies a user if they have been busy for more than x minutes
